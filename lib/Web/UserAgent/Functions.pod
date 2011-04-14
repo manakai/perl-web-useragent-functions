@@ -1,0 +1,61 @@
+=head1 NAME
+
+Web::UserAgent::Functions - Easy-to-use functions for HTTP accesses
+
+=head1 SYNOPSIS
+
+  use Web::UserAgent::Functions qw(http_get http_post);
+  
+  my ($req, $res) = http_get
+      url => q<http://www.example.com/>,
+      params => {
+          foo => 'bar',
+      };
+  
+  my ($req, $res) = http_post
+      url => q<http://www.example.com/>,
+      header_fields => {
+          'X-Header-Field' => 'value',
+      },
+      params => {
+          foo => 'bar',
+      };
+
+=head1 DESCRIPTION
+
+This module provides three functions for HTTP access: C<http_get>,
+C<http_post>, and C<http_post_data>.  They are in fact wrappers for
+L<LWP::UserAgent>.  They accept parameters that describes which
+resource is how retrieved and return L<HTTP::Request> and
+L<HTTP::Response> objects of the HTTP access.
+
+It adds following features to the original L<LWP::UserAgent> module:
+
+=over 4
+
+=item - Useful functional interfaces
+
+=item - Avoiding use of SOCKS proxy transparently using L<LWP::UserAgent::Curl> module
+
+=item - C<application/x-www-form-urlencoded> support
+
+=item - OAuth 1.0 support
+
+=back
+
+=head1 SEE ALSO
+
+L<LWP::UserAgent>. C<bin/tools/http.pl>.
+
+=head1 AUTHOR
+
+Wakaba <wakabatan@hatena.ne.jp>.
+
+=head1 LICENSE
+
+Copyright 2009-2011 Hatena <http://www.hatena.ne.jp/>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut

@@ -1,0 +1,31 @@
+{
+    main_module_name => 'Web::UserAgent::Functions',
+    file_names => [qw(
+        lib/LWP/UserAgent/Curl.pm
+        lib/LWP/UserAgent/Curl.pod
+        lib/Web/UserAgent/Functions.pm
+        lib/Web/UserAgent/Functions.pod
+        t/web-ua-functions.t
+        config/web-useragent-functions.pi
+        script/tools/http.pl
+    )],
+    req_modules => {
+        'Encode' => 0,
+        'Exporter::Lite' => 0,
+        'File::Temp' => 0,
+        'Getopt::Long' => 0,
+        'HTTP::Response' => 0,
+        'LWP::UserAgent' => 0,
+        'OAuth::Lite' => 0,
+        'Path::Class' => 0,
+        'Pod::Usage' => 0,
+        'UNIVERSAL::require' => 0,
+        'URL::PercentEncoding' => 0,
+    },
+    t_req_modules => {
+        'HTTest::Mock' => 0,
+        'Path::Class' => 0,
+        'Test::MoreMore' => 0,
+        'Test::Class' => 0,
+    },
+};

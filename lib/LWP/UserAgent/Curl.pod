@@ -1,0 +1,28 @@
+=head1 NAME
+
+LWP::UserAgent::Curl - LWP::UserAgent-compatible interface to curl command
+
+=head1 DESCRIPTION
+
+This module defines the C<simple_request> method that can be used to
+replace C<LWP::UserAgent>'s C<simple_request> method such that curl is
+invoked instead of usual C<LWP::UserAgent>'s processing.
+
+=head1 SEE ALSO
+
+L<LWP::UserAgent>.
+
+curl <http://curl.haxx.se/>.
+
+=head1 AUTHOR
+
+Wakaba <wakabatan@hatena.ne.jp>.
+
+=head1 LICENSE
+
+Copyright 2009-2011 Hatena <http://www.hatena.ne.jp/>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
