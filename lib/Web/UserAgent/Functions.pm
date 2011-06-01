@@ -174,10 +174,10 @@ sub _http {
     $class .= '::Curl' if $SOCKSIFYING;
 
     my %lwp_args = (parse_head => 0);
-    $lwp_args{timeout} = $Timeout if $Timeout;
+    $lwp_args{timeout} = $args{timeout} || $Timeout || 5;
     
     my $ua = $class->new(%lwp_args);
-    $ua->proxy(http => $Proxy) if $args{use_proxy} and $Proxy;
+    $ua->proxy(http => $Proxy) if $Proxy;
     my $req = HTTP::Request->new($args{method} => $args{url});
     
     # If you don't need percent-encode, use |header_fields| instead.
