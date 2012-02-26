@@ -1,0 +1,3 @@
+[submodule "modules/perl-web-utils"]
+	path = modules/perl-web-utils
+	url = git://github.com/wakaba/perl-web-utils.git
