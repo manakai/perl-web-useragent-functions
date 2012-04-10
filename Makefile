@@ -9,6 +9,7 @@ Makefile.setupenv:
 
 local-perl perl-version perl-exec \
 config/perl/libs.txt carton-install carton-update carton-install-module \
+remotedev-test \
 generatepm: %: Makefile-setupenv
 	$(MAKE) --makefile Makefile.setupenv $@
 
