@@ -14,6 +14,26 @@ L<LWP::UserAgent>.
 
 curl <http://curl.haxx.se/>.
 
+=head1 DEVELOPMENT
+
+Latest version of the module is available from the GitHub repository:
+
+=over 4
+
+=item GitHub
+
+<https://github.com/wakaba/perl-web-useragent-functions>.
+
+=item Travis CI
+
+<http://travis-ci.org/wakaba/perl-web-useragent-functions>.
+
+=item Tarball
+
+<http://wakaba.github.com/packages/perl/#LWP-UserAgent-Curl>.
+
+=back
+
 =head1 CHANGES
 
 =over 4

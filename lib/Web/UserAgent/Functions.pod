@@ -47,6 +47,26 @@ It adds following features to the original L<LWP::UserAgent> module:
 
 L<LWP::UserAgent>. C<bin/tools/http.pl>.
 
+=head1 DEVELOPMENT
+
+Latest version of the module is available from the GitHub repository:
+
+=over 4
+
+=item GitHub
+
+<https://github.com/wakaba/perl-web-useragent-functions>.
+
+=item Travis CI
+
+<http://travis-ci.org/wakaba/perl-web-useragent-functions>.
+
+=item Tarball
+
+<http://wakaba.github.com/packages/perl/#Web-UserAgent-Functions>.
+
+=back
+
 =head1 CHANGES
 
 =over 4
