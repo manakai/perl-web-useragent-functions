@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Path::Class;
 use lib file(__FILE__)->dir->parent->subdir('lib')->stringify;
-use lib glob file(__FILE__)->dir->parent->parent->subdir('*', 'lib')->stringify;
+use lib glob file(__FILE__)->dir->parent->subdir('modules', '*', 'lib')->stringify;
 use base qw(Test::Class);
 use Test::MoreMore;
 use HTTest::Mock;

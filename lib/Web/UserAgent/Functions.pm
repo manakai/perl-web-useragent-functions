@@ -183,6 +183,11 @@ sub _http {
     # If you don't need percent-encode, use |header_fields| instead.
     $args{header_fields}->{Cookie} ||= join '; ', map { (percent_encode_c $_->[0]) . '=' . percent_encode_c $_->[1] } grep { defined $_->[1] } map { [$_ => $args{cookies}->{$_}] } sort { $a cmp $b } keys %{$args{cookies}} if $args{cookies};
 
+    if ($args{basic_auth}) {
+        require MIME::Base64;
+        $args{header_fields}->{'Authorization'} ||= 'Basic ' . MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]));
+    }
+
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
         $req->header($n => $v);
     }
