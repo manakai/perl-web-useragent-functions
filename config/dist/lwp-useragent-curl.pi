@@ -17,4 +17,9 @@
         'Test::More' => 0,
         'Test::Class' => 0,
     },
+    urls => {
+        git => {
+            GitHub => q<https://github.com/wakaba/perl-web-useragent-functions>,
+        },
+    },
 };

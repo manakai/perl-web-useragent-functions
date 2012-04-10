@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '1.0';
+our $VERSION = '2.0';
 use URL::PercentEncode;
 use LWP::UserAgent;
 use LWP::UserAgent::Curl;

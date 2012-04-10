@@ -1,8 +1,6 @@
 {
     main_module_name => 'Web::UserAgent::Functions',
     file_names => [qw(
-        lib/LWP/UserAgent/Curl.pm
-        lib/LWP/UserAgent/Curl.pod
         lib/Web/UserAgent/Functions.pm
         lib/Web/UserAgent/Functions.pod
         t/web-ua-functions.t
@@ -13,7 +11,6 @@
         'Encode' => 0,
         'Exporter::Lite' => 0,
         'Getopt::Long' => 0,
-        'HTTP::Response' => 0,
         'LWP::UserAgent' => 0,
         'OAuth::Lite' => 0,
         'Path::Class' => 0,
@@ -25,5 +22,10 @@
         'Path::Class' => 0,
         'Test::MoreMore' => 0,
         'Test::Class' => 0,
+    },
+    urls => {
+        git => {
+            GitHub => q<https://github.com/wakaba/perl-web-useragent-functions>,
+        },
     },
 };
