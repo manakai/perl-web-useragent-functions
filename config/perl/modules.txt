@@ -15,3 +15,7 @@ Path::Class
 Getopt::Long
 Pod::Usage
 Encode
+
+AnyEvent
+AnyEvent::HTTP
+HTTP::Response

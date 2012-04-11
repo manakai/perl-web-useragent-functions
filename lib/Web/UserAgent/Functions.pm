@@ -208,34 +208,73 @@ sub _http {
             print $DUMP_OUTPUT "====== WEBUA_F ======\n";
         }
     }
-    
-    my $res = $ua->request($req);
 
-    if ($DUMP) {
-        if ($DUMP >= 2) {
-            print $DUMP_OUTPUT "====== RESPONSE =====\n";
-            print $DUMP_OUTPUT $res->as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F ======\n";
-        } else {
-            print $DUMP_OUTPUT "====== RESPONSE =====\n";
-            print $DUMP_OUTPUT $res->protocol, ' ', $res->status_line, "\n";
-            print $DUMP_OUTPUT $res->headers_as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+    my $done = sub {
+        my $res = shift;
+        
+        if ($DUMP) {
+            if ($DUMP >= 2) {
+                print $DUMP_OUTPUT "====== RESPONSE =====\n";
+                print $DUMP_OUTPUT $res->as_string;
+                print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+            } else {
+                print $DUMP_OUTPUT "====== RESPONSE =====\n";
+                print $DUMP_OUTPUT $res->protocol, ' ', $res->status_line, "\n";
+                print $DUMP_OUTPUT $res->headers_as_string;
+                print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+            }
         }
-    }
+        
+        if ($res->is_success) {
+            $args{onsuccess}->($req, $res) if $args{onsuccess};
+        } else {
+            ($args{onerror} || sub {
+                 warn sprintf "URL <%s>, status %s\n",
+                     map { s/\x0D\x0A?|\x0D/\n/g; $_ }
+                         $args{url}, $res->status_line;
+             })->($req, $res);
+        }
+
+        if ($args{cb}) {
+            $args{cb}->($req, $res);
+        }
+    };
     
-    if ($res->is_success) {
-        $args{onsuccess}->($req, $res) if $args{onsuccess};
+    if ($args{anyevent}) {
+        require AnyEvent;
+        require AnyEvent::HTTP;
+        require HTTP::Response;
+        
+        AnyEvent::HTTP::http_request(
+            'GET',
+            $args{url},
+            body => $req->content,
+            headers => {
+                map { ( $_ => $req->header($_) ) } $req->header_field_names
+            },
+            sub {
+                my ($body, $headers) = @_;
+                my $code = delete $headers->{Status};
+                my $msg = delete $headers->{Reason};
+                my $http_version = 'HTTP/' . delete $headers->{HTTPVersion};
+                my $res = HTTP::Response->new(
+                    $code,
+                    $msg,
+                    [map { $_ => $headers->{$_} }
+                     grep { not /[A-Z]/ } keys %$headers],
+                    $body,
+                );
+                $res->protocol($http_version);
+                $res->request($req);
+                $done->($res);
+            },
+        );
+        return ($req, undef);
     } else {
-        ($args{onerror} || sub {
-            warn sprintf "URL <%s>, status %s\n",
-                map { s/\x0D\x0A?|\x0D/\n/g; $_ }
-                    $args{url}, $res->status_line;
-        })->($req, $res);
+        my $res = $ua->request($req);
+        $done->($res);
+        return ($req, $res);
     }
-
-    return ($req, $res);
 }
-
 
 1;

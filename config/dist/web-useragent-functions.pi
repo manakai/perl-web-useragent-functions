@@ -16,6 +16,10 @@
         'Path::Class' => 0,
         'Pod::Usage' => 0,
         'URL::PercentEncoding' => 0,
+
+        'AnyEvent' => 0,
+        'AnyEvent::HTTP' => 0,
+        'HTTP::Response' => 0,
    },
     t_req_modules => {
         'HTTest::Mock' => 0,
