@@ -246,7 +246,7 @@ sub _http {
         require HTTP::Response;
         
         AnyEvent::HTTP::http_request(
-            'GET',
+            $req->method,
             $args{url},
             body => $req->content,
             headers => {
@@ -256,7 +256,8 @@ sub _http {
                 my ($body, $headers) = @_;
                 my $code = delete $headers->{Status};
                 my $msg = delete $headers->{Reason};
-                my $http_version = 'HTTP/' . delete $headers->{HTTPVersion};
+                my $http_version = 'HTTP/' .
+                    (delete $headers->{HTTPVersion} || '?.?');
                 my $res = HTTP::Response->new(
                     $code,
                     $msg,
