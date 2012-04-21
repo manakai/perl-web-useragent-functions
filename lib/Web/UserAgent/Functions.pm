@@ -166,6 +166,7 @@ sub http_post_data (%) {
 our $Proxy;
 our $Timeout;
 our $RequestPostprocessor;
+our $MaxRedirect;
 
 sub _http {
     my %args = @_;
@@ -175,6 +176,7 @@ sub _http {
 
     my %lwp_args = (parse_head => 0);
     $lwp_args{timeout} = $args{timeout} || $Timeout || 5;
+    $lwp_args{max_redirect} = $args{max_redirect} || $MaxRedirect;
     
     my $ua = $class->new(%lwp_args);
     $ua->proxy(http => $Proxy) if $Proxy;
