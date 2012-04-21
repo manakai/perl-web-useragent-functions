@@ -19,3 +19,6 @@ Encode
 AnyEvent
 AnyEvent::HTTP
 HTTP::Response
+
+Crypt::SSLeay
+LWP::Protocol::https
