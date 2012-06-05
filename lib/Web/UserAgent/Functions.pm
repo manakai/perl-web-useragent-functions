@@ -188,7 +188,7 @@ sub _http {
     if ($args{basic_auth}) {
         require MIME::Base64;
         $args{header_fields}->{'Authorization'} ||= 'Basic ' . MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]));
-        $args{header_fields}->{'Authorization'} =~ s/\x0D\x0A/ /g;
+        $args{header_fields}->{'Authorization'} =~ s/[\x0D\x0A]/ /g;
     }
 
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
