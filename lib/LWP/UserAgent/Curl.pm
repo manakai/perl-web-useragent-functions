@@ -37,7 +37,6 @@ sub execute_request ($) {
     my @opt = (map { ('--header' => $_) } @header);
     push @opt, ('--data-binary' => $req->content) if $req->method eq 'POST';
 
-    local %ENV = ();
     system 'curl',
         '--dump-header' => $header_file_name,
         -o => $body_file_name,
