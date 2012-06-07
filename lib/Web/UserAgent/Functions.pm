@@ -160,6 +160,16 @@ sub http_post_data (%) {
 
     $args{header_fields}->{'Content-Type'} = $args{content_type}
         if defined $args{content_type};
+
+    my $query = serialize_form_urlencoded $args{params};
+    if (length $query) {
+        if ($args{url} =~ /\?/) {
+            $args{url} .= '&' . $query;
+        } else {
+            $args{url} .= '?' . $query;
+        }
+    }
+
     return _http(%args, method => $args{override_method} || 'POST');
 }
 
