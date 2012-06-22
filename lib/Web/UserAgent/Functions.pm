@@ -40,10 +40,12 @@ sub serialize_form_urlencoded ($) {
     return join '&', map {
         my $n = percent_encode_c $_;
         my $vs = $params->{$_};
-        if (ref $vs eq 'ARRAY') {
-            (map { $n . '=' . percent_encode_c $_ } @$vs);
+        if (defined $vs and ref $vs eq 'ARRAY') {
+            (map { $n . '=' . percent_encode_c $_ } grep { defined $_ } @$vs);
+        } elsif (defined $vs) {
+            ($n . '=' . percent_encode_c $vs);
         } else {
-            $n . '=' . percent_encode_c $vs;
+            ();
         }
     } keys %$params;
 }
