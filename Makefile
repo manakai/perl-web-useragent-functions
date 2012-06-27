@@ -7,8 +7,8 @@ Makefile-setupenv: Makefile.setupenv
 Makefile.setupenv:
 	wget -O $@ https://raw.github.com/wakaba/perl-setupenv/master/Makefile.setupenv
 
-local-perl perl-version perl-exec \
-config/perl/libs.txt carton-install carton-update carton-install-module \
+lperl local-perl perl-version perl-exec \
+pmb-update pmb-install \
 remotedev-test \
 generatepm: %: Makefile-setupenv
 	$(MAKE) --makefile Makefile.setupenv $@
@@ -19,7 +19,12 @@ PERL_PATH = $(abspath local/perlbrew/perls/perl-$(PERL_VERSION)/bin)
 
 test: safetest
 
-test-deps: carton-install config/perl/libs.txt
+test-deps: git-submodules pmb-install
+
+GIT = git
+
+git-submodules:
+	$(GIT) submodule update --init
 
 safetest: test-deps
 	PATH=$(PERL_PATH):$(PATH) PERL5LIB=$(shell cat config/perl/libs.txt) \

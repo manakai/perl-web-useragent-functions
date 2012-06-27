@@ -15,7 +15,6 @@
         'OAuth::Lite' => 0,
         'Path::Class' => 0,
         'Pod::Usage' => 0,
-        'URL::PercentEncoding' => 0,
 
         'AnyEvent' => 0,
         'AnyEvent::HTTP' => 0,

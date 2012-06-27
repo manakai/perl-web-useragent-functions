@@ -1,8 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '2.0';
-use URL::PercentEncode;
+our $VERSION = '3.0';
 use LWP::UserAgent;
 use LWP::UserAgent::Curl;
 use Encode;
@@ -32,9 +31,14 @@ sub check_socksify () {
     }
 }
 
+sub percent_encode_c ($) {
+    my $s = Encode::encode ('utf-8', ''.$_[0]);
+  $s =~ s/([^0-9A-Za-z._~-])/sprintf '%%%02X', ord $1/ge;
+  return $s;
+} # percent_encode_c
+
 # Warning! $args{params} values MUST be utf8 character strings, not
 # byte strings.
-
 sub serialize_form_urlencoded ($) {
     my $params = shift || {};
     return join '&', map {
