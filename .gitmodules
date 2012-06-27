@@ -1,9 +1,3 @@
-[submodule "modules/test-moremore"]
-	path = modules/test-moremore
-	url = git://github.com/wakaba/perl-test-moremore
 [submodule "modules/perl-httest"]
 	path = modules/perl-httest
 	url = git://github.com/wakaba/perl-httest
-[submodule "modules/perl-web-utils"]
-	path = modules/perl-web-utils
-	url = git://github.com/wakaba/perl-web-utils
