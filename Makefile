@@ -1,3 +1,12 @@
+## Run tests:
+##   $ make test
+## Update dependency list:
+##   $ make local-submodules pmb-update
+## Install dependent modules into ./local/:
+##   $ make pmb-install
+## Generate tarballs:
+##   $ make dist
+
 all:
 
 Makefile-setupenv: Makefile.setupenv
