@@ -1,3 +1,0 @@
-[submodule "modules/perl-httest"]
-	path = modules/perl-httest
-	url = git://github.com/wakaba/perl-httest

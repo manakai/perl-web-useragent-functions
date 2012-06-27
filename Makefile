@@ -9,7 +9,7 @@ Makefile.setupenv:
 
 lperl local-perl perl-version perl-exec \
 pmb-update pmb-install \
-remotedev-test \
+local-submodules remotedev-test \
 generatepm: %: Makefile-setupenv
 	$(MAKE) --makefile Makefile.setupenv $@
 
@@ -19,7 +19,7 @@ PERL_PATH = $(abspath local/perlbrew/perls/perl-$(PERL_VERSION)/bin)
 
 test: safetest
 
-test-deps: git-submodules pmb-install
+test-deps: git-submodules local-submodules pmb-install
 
 GIT = git
 
