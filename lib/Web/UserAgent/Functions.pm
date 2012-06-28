@@ -183,6 +183,7 @@ our $Proxy;
 our $Timeout;
 our $RequestPostprocessor;
 our $MaxRedirect;
+our $SocksProxyURL;
 
 sub _http {
     my %args = @_;
@@ -216,12 +217,16 @@ sub _http {
 
     if ($DEBUG or $DUMP) {
         warn "<$args{url}>...\n" if $DEBUG;
+        print $DUMP_OUTPUT "====== REQUEST ======\n";
+        if ($args{anyevent} and $SocksProxyURL) {
+            print $DUMP_OUTPUT "== PROXY $SocksProxyURL ==\n";
+        } elsif (not $args{anyevent} and $SOCKSIFYING) {
+            print $DUMP_OUTPUT "== SOCKSIFY ==\n";
+        }
         if ($DUMP >= 2) {
-            print $DUMP_OUTPUT "====== REQUEST ======\n";
             print $DUMP_OUTPUT $req->as_string;
             print $DUMP_OUTPUT "====== WEBUA_F ======\n";
         } else {
-            print $DUMP_OUTPUT "====== REQUEST ======\n";
             print $DUMP_OUTPUT $req->method, ' ', $req->uri, ' ', ($req->protocol || ''), "\n";
             print $DUMP_OUTPUT $req->headers_as_string;
             print $DUMP_OUTPUT "====== WEBUA_F ======\n";
@@ -263,10 +268,18 @@ sub _http {
         require AnyEvent;
         require AnyEvent::HTTP;
         require HTTP::Response;
+        my $aeclass = 'AnyEvent::HTTP';
+        my $socks_url;
+        if ($SocksProxyURL) {
+            $aeclass .= '::Socks';
+            require AnyEvent::HTTP::Socks;
+            $socks_url = $SocksProxyURL;
+        }
         
-        AnyEvent::HTTP::http_request(
+        $aeclass->can('http_request')->(
             $req->method,
             $args{url},
+            socks => $socks_url,
             body => $req->content,
             headers => {
                 map { s/[\x0D\x0A]/ /g; $_ }

@@ -1,3 +1,4 @@
 AnyEvent
 AnyEvent::HTTP
+AnyEvent::HTTP::Socks
 HTTP::Response
