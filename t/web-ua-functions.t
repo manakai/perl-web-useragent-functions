@@ -201,6 +201,16 @@ sub _cookies : Test(1) {
     is $req->header('Cookie'), 'Cookie%20A=ab%20%E4%80%80%3B%20%21; Cookie%20B%22=ab%20%E4%80%80%3B%20%21; %E5%80%80Cookie%20D=';
 }
 
+sub _lwp_broken : Test(4) {
+#line 1 "_lwp_broken"
+    local *LWP::UserAgent::request = sub { die "Internal LWP error!!1" };
+    my ($req, $res) = http_get url => q<http://hoge/fuga>;
+    isa_ok $res, 'HTTP::Response';
+    is $res->code, 500;
+    is $res->message, 'LWP Error';
+    is $res->content, "Internal LWP error!!1 at _lwp_broken line 1.\n"
+}
+
 __PACKAGE__->runtests;
 
 1;
