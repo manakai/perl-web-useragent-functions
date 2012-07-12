@@ -1,0 +1,25 @@
+{
+    main_module_name => 'LWP::UserAgent::Curl',
+    file_names => [qw(
+        lib/LWP/UserAgent/Curl.pm
+        lib/LWP/UserAgent/Curl.pod
+        t/lwp-useragent-curl.t
+        config/dist/lwp-useragent-curl.pi
+    )],
+    req_modules => {
+        'File::Temp' => 0,
+        'HTTP::Response' => 0,
+        'LWP::UserAgent' => 0,
+        'Path::Class' => 0,
+    },
+    t_req_modules => {
+        'Path::Class' => 0,
+        'Test::More' => 0,
+        'Test::Class' => 0,
+    },
+    urls => {
+        git => {
+            GitHub => q<https://github.com/wakaba/perl-web-useragent-functions>,
+        },
+    },
+};

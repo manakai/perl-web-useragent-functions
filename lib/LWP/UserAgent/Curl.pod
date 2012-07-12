@@ -14,13 +14,43 @@ L<LWP::UserAgent>.
 
 curl <http://curl.haxx.se/>.
 
+=head1 DEVELOPMENT
+
+Latest version of the module is available from the GitHub repository:
+
+=over 4
+
+=item GitHub
+
+<https://github.com/wakaba/perl-web-useragent-functions>.
+
+=item Travis CI
+
+<http://travis-ci.org/wakaba/perl-web-useragent-functions>.
+
+=item Tarball
+
+<http://wakaba.github.com/packages/perl/#LWP-UserAgent-Curl>.
+
+=back
+
+=head1 CHANGES
+
+=over 4
+
+=item 1.0 (2012-04-11)
+
+First release as a standalone package.
+
+=back
+
 =head1 AUTHOR
 
 Wakaba <wakabatan@hatena.ne.jp>.
 
 =head1 LICENSE
 
-Copyright 2009-2011 Hatena <http://www.hatena.ne.jp/>.
+Copyright 2009-2012 Hatena <http://www.hatena.ne.jp/>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

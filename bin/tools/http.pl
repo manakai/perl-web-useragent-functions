@@ -5,7 +5,6 @@ use Path::Class;
 use lib file(__FILE__)->dir->parent->parent->subdir('lib')->stringify;
 use Getopt::Long;
 use Pod::Usage;
-use UNIVERSAL::require;
 use Encode;
 
 my $class = 'Web::UserAgent::Functions';
@@ -45,7 +44,7 @@ GetOptions(
 
 pod2usage(1) unless $url and $class and $method;
 
-$class->require or die $@;
+eval qq{ require $class } or die $@;
 $class->import(qw(http_get http_post));
 
 {
@@ -180,7 +179,7 @@ Wakaba <wakabatan@hatena.ne.jp>.
 
 =head1 LICENSE
 
-Copyright 2011 Hatena <http://www.hatena.ne.jp/>.
+Copyright 2011-2012 Hatena <http://www.hatena.ne.jp/>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
