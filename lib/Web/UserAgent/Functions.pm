@@ -356,6 +356,13 @@ sub _http {
             $socks_url = $SocksProxyURL;
         }
         
+        my $timer = AE::timer($lwp_args{timeout}, 0, sub {
+            my $res = HTTP::Response->new(598, 'Timeout', [], '');
+            $res->protocol('HTTP/?.?');
+            $res->request($req);
+            $done->($res) if $done;
+            undef $done;
+        }) if $lwp_args{timeout};
         $aeclass->can('http_request')->(
             $req->method,
             $args{url},
@@ -380,7 +387,9 @@ sub _http {
                 );
                 $res->protocol($http_version);
                 $res->request($req);
-                $done->($res);
+                $done->($res) if $done;
+                undef $done;
+                undef $timer;
             },
         );
         return ($req, undef);
