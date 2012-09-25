@@ -1,11 +1,19 @@
 package test::Web::UA::Functions;
 use strict;
+BEGIN {
+    my $file_name = __FILE__;
+    $file_name =~ s{[^/]+$}{};
+    $file_name ||= '.';
+    $file_name .= '/../config/perl/libs.txt';
+    open my $file, '<', $file_name or die "$0: $file_name: $!";
+    unshift @INC, split /:/, scalar <$file>;
+}
 use warnings;
 use Path::Class;
 use lib file(__FILE__)->dir->parent->subdir('lib')->stringify;
 use lib glob file(__FILE__)->dir->parent->subdir('modules', '*', 'lib')->stringify;
 use base qw(Test::Class);
-use Test::MoreMore;
+use Test::More;
 use HTTest::Mock;
 use HTTest::Mock::Server;
 use Web::UserAgent::Functions;
@@ -199,6 +207,16 @@ sub _cookies : Test(1) {
             "\x{5000}Cookie D" => '',
         };
     is $req->header('Cookie'), 'Cookie%20A=ab%20%E4%80%80%3B%20%21; Cookie%20B%22=ab%20%E4%80%80%3B%20%21; %E5%80%80Cookie%20D=';
+}
+
+sub _lwp_broken : Test(4) {
+#line 1 "_lwp_broken"
+    local *LWP::UserAgent::request = sub { die "Internal LWP error!!1" };
+    my ($req, $res) = http_get url => q<http://hoge/fuga>;
+    isa_ok $res, 'HTTP::Response';
+    is $res->code, 500;
+    is $res->message, 'LWP Error';
+    is $res->content, "Internal LWP error!!1 at _lwp_broken line 1.\n"
 }
 
 __PACKAGE__->runtests;
