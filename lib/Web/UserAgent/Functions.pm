@@ -360,6 +360,7 @@ sub _http {
             my $res = HTTP::Response->new(598, 'Timeout', [], '');
             $res->protocol('HTTP/?.?');
             $res->request($req);
+            $res->content(sprintf 'AE::HTTP timeout (%d)', $lwp_args{timeout});
             $done->($res) if $done;
             undef $done;
         }) if $lwp_args{timeout};
