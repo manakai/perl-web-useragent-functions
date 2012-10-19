@@ -306,6 +306,7 @@ sub _http {
             print $DUMP_OUTPUT "== SOCKSIFY ==\n";
         }
         if ($DUMP >= 2) {
+            print $DUMP_OUTPUT "TIMEOUT: $lwp_args{timeout}\n";
             print $DUMP_OUTPUT $req->as_string;
             print $DUMP_OUTPUT "====== WEBUA_F ======\n";
         } else {
