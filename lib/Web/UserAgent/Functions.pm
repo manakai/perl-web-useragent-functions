@@ -246,6 +246,7 @@ our $MaxRedirect;
 our $SocksProxyURL;
 our $MaxSize;
 our $AcceptSchemes ||= [qw(http https)];
+our $SeqID = int rand 1000000;
 
 sub _http {
     my %args = @_;
@@ -295,11 +296,12 @@ sub _http {
     }
     $req->content($args{content}) if defined $args{content};
 
+    $SeqID++;
     $RequestPostprocessor->($req, \%args) if $RequestPostprocessor;
 
     if ($DEBUG or $DUMP) {
         warn "<$args{url}>...\n" if $DEBUG;
-        print $DUMP_OUTPUT "====== REQUEST ======\n";
+        print $DUMP_OUTPUT "====== REQUEST($SeqID) ======\n";
         if ($args{anyevent} and $SocksProxyURL) {
             print $DUMP_OUTPUT "== PROXY $SocksProxyURL ==\n";
         } elsif (not $args{anyevent} and $SOCKSIFYING) {
@@ -308,11 +310,11 @@ sub _http {
         if ($DUMP >= 2) {
             print $DUMP_OUTPUT "TIMEOUT: $lwp_args{timeout}\n";
             print $DUMP_OUTPUT $req->as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+            print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
         } else {
             print $DUMP_OUTPUT $req->method, ' ', $req->uri, ' ', ($req->protocol || ''), "\n";
             print $DUMP_OUTPUT $req->headers_as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+            print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
         }
     }
 
@@ -321,14 +323,14 @@ sub _http {
         
         if ($DUMP) {
             if ($DUMP >= 2) {
-                print $DUMP_OUTPUT "====== RESPONSE =====\n";
+                print $DUMP_OUTPUT "====== RESPONSE($SeqID) =====\n";
                 print $DUMP_OUTPUT $res->as_string;
-                print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+                print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
             } else {
-                print $DUMP_OUTPUT "====== RESPONSE =====\n";
+                print $DUMP_OUTPUT "====== RESPONSE($SeqID) =====\n";
                 print $DUMP_OUTPUT $res->protocol, ' ', $res->status_line, "\n";
                 print $DUMP_OUTPUT $res->headers_as_string;
-                print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+                print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
             }
         }
         
