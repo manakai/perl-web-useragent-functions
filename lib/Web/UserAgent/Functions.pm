@@ -297,12 +297,12 @@ sub _http {
     }
     $req->content($args{content}) if defined $args{content};
 
-    $SeqID++;
+    my $seq_id = $SeqID++;
     $RequestPostprocessor->($req, \%args) if $RequestPostprocessor;
 
     if ($DEBUG or $DUMP) {
         warn "<$args{url}>...\n" if $DEBUG;
-        print $DUMP_OUTPUT "====== REQUEST($SeqID) ======\n";
+        print $DUMP_OUTPUT "====== REQUEST($seq_id) ======\n";
         if ($args{anyevent} and $SocksProxyURL) {
             print $DUMP_OUTPUT "== PROXY $SocksProxyURL ==\n";
         } elsif (not $args{anyevent} and $SOCKSIFYING) {
@@ -311,11 +311,11 @@ sub _http {
         if ($DUMP >= 2) {
             print $DUMP_OUTPUT "TIMEOUT: $lwp_args{timeout}\n";
             print $DUMP_OUTPUT $req->as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
+            print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
         } else {
             print $DUMP_OUTPUT $req->method, ' ', $req->uri, ' ', ($req->protocol || ''), "\n";
             print $DUMP_OUTPUT $req->headers_as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
+            print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
         }
     }
 
@@ -324,14 +324,14 @@ sub _http {
         
         if ($DUMP) {
             if ($DUMP >= 2) {
-                print $DUMP_OUTPUT "====== RESPONSE($SeqID) =====\n";
+                print $DUMP_OUTPUT "====== RESPONSE($seq_id) =====\n";
                 print $DUMP_OUTPUT $res->as_string;
-                print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
+                print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
             } else {
-                print $DUMP_OUTPUT "====== RESPONSE($SeqID) =====\n";
+                print $DUMP_OUTPUT "====== RESPONSE($seq_id) =====\n";
                 print $DUMP_OUTPUT $res->protocol, ' ', $res->status_line, "\n";
                 print $DUMP_OUTPUT $res->headers_as_string;
-                print $DUMP_OUTPUT "====== WEBUA_F($SeqID) ======\n";
+                print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
             }
         }
         
@@ -374,6 +374,7 @@ sub _http {
             $req->method,
             $args{url},
             socks => $socks_url,
+            recurse => $lwp_args{max_redirect},
             body => $req->content,
             headers => {
                 map { s/[\x0D\x0A]/ /g; $_ }
