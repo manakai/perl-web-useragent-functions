@@ -26,7 +26,8 @@ sub enable_socksify_lwp () {
 sub check_socksify () {
     if (
         ($ENV{LD_PRELOAD} || '') =~ /\blibdl\.so\b/ ||
-        ($ENV{LD_PRELOAD} || '') =~ /\blibdsocks\.so\b/
+        ($ENV{LD_PRELOAD} || '') =~ /\blibdsocks\.so\b/ ||
+        ($ENV{LD_PRELOAD} || '') =~ /\blibtsocks\.so\b/
     ) {
         enable_socksify_lwp;
     }
