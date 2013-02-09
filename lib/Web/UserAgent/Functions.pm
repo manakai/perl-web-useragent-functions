@@ -285,11 +285,14 @@ sub _http {
         }
     }
 
+    my $use_proxy;
     if ($Proxy and not $args{no_proxy} and
         ($UseProxyIfCookie or 
          (not $args{header_fields}->{Cookie} and
           not $args{header_fields}->{cookie}))) {
+        $use_proxy = 1;
         $ua->proxy(http => $Proxy);
+        # LWP::UserAgent does not support https: proxy
     }
 
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
@@ -361,6 +364,15 @@ sub _http {
             require AnyEvent::HTTP::Socks;
             $socks_url = $SocksProxyURL;
         }
+
+        my %ae_args;
+        if ($use_proxy) {
+            if ($Proxy =~ m{^[Hh][Tt][Tt][Pp]://(.+)\:([0-9]+)/?$}) {
+                $ae_args{proxy} = [$1, $2];
+            } elsif ($Proxy =~ m{^(.+):([0-9]+)$}) {
+                $ae_args{proxy} = [$1, $2];
+            }
+        }
         
         my $timer = AE::timer($lwp_args{timeout}, 0, sub {
             my $res = HTTP::Response->new(598, 'Timeout', [], '');
@@ -375,6 +387,7 @@ sub _http {
             $args{url},
             socks => $socks_url,
             recurse => $lwp_args{max_redirect},
+            %ae_args,
             body => $req->content,
             headers => {
                 map { s/[\x0D\x0A]/ /g; $_ }
