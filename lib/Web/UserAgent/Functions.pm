@@ -14,8 +14,13 @@ our $DEBUG ||= $ENV{WEBUA_DEBUG};
 
 our $DUMP ||= $DEBUG;
 our $DUMP_OUTPUT ||= \*STDERR;
+our $ENABLE_CURL ||= $DEBUG;
 
 our $SOCKSIFYING;
+
+if ($ENABLE_CURL) {
+    *LWP::UserAgent::simple_request = \*LWP::UserAgent::Curl::simple_request;
+}
 
 sub enable_socksify_lwp () {
     $SOCKSIFYING = 1;
@@ -26,8 +31,7 @@ sub enable_socksify_lwp () {
 sub check_socksify () {
     if (
         ($ENV{LD_PRELOAD} || '') =~ /\blibdl\.so\b/ ||
-        ($ENV{LD_PRELOAD} || '') =~ /\blibdsocks\.so\b/ ||
-        ($ENV{LD_PRELOAD} || '') =~ /\blibtsocks\.so\b/
+        ($ENV{LD_PRELOAD} || '') =~ /\blibdsocks\.so\b/
     ) {
         enable_socksify_lwp;
     }
