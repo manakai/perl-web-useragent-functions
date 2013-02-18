@@ -1,0 +1,4 @@
+Exporter::Lite
+HTTP::Request::Common
+LWP::UserAgent
+URI
