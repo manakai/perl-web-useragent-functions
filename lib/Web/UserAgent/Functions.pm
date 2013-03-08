@@ -391,10 +391,9 @@ sub _http {
             $req->method,
             $args{url},
             socks => $socks_url,
-            recurse => $lwp_args{max_redirect},
+            (defined $lwp_args{max_redirect} ? (recurse => $lwp_args{max_redirect}) : ()),
             %ae_args,
             body => $req->content,
-            recurse => $lwp_args{max_redirect},
             headers => {
                 map { s/[\x0D\x0A]/ /g; $_ }
                 map { ( $_ => $req->header($_) ) } $req->header_field_names
