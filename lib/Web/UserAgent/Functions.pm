@@ -256,7 +256,8 @@ sub _http {
 
     my %lwp_args = (parse_head => 0);
     $lwp_args{timeout} = $args{timeout} || $Timeout || 5;
-    $lwp_args{max_redirect} = $args{max_redirect} || $MaxRedirect;
+    $lwp_args{max_redirect} = defined $args{max_redirect}
+        ? $args{max_redirect} : $MaxRedirect;
     $lwp_args{max_size} = $args{max_size} || $MaxSize
         if defined $args{max_size} || defined $MaxSize;
     $lwp_args{protocols_allowed} = $AcceptSchemes;
@@ -374,6 +375,7 @@ sub _http {
             $args{url},
             socks => $socks_url,
             body => $req->content,
+            recurse => $lwp_args{max_redirect},
             headers => {
                 map { s/[\x0D\x0A]/ /g; $_ }
                 map { ( $_ => $req->header($_) ) } $req->header_field_names
