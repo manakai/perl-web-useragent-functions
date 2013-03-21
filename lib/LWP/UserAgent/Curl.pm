@@ -15,7 +15,7 @@ sub execute_request ($$$) {
     my ($req, $arg, $size_hint) = @_;
     
     my (undef, $header_file_name) = tempfile;
-    my (undef, $body_file_name) = defined $arg and not ref $arg eq 'CODE'
+    my (undef, $body_file_name) = (defined $arg and not ref $arg eq 'CODE')
         ? (undef, $arg) : tempfile;
     
     $req->remove_header('Accept-Encoding') if $Debug;
