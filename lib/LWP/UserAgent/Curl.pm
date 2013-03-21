@@ -11,11 +11,12 @@ our $Debug ||= $ENV{WEBUA_DEBUG} || 0;
 
 # XXX Redirect handling
 
-sub execute_request ($) {
-    my $req = shift;
+sub execute_request ($$$) {
+    my ($req, $arg, $size_hint) = @_;
     
     my (undef, $header_file_name) = tempfile;
-    my (undef, $body_file_name) = tempfile;
+    my (undef, $body_file_name) = defined $arg and not ref $arg eq 'CODE'
+        ? (undef, $arg) : tempfile;
     
     $req->remove_header('Accept-Encoding') if $Debug;
     my @header;
@@ -55,17 +56,24 @@ sub execute_request ($) {
         print STDERR "======== LWP::UA::Curl =======\n";
     }
     
-    my $res = HTTP::Response->parse($header . $body_f->slurp);
-    $res->request($req);
-    return $res;
+    if (defined $arg and ref $arg eq 'CODE') {
+        my $res = HTTP::Response->parse($header);
+        $res->request($req);
+        $arg->(scalar $body_f->slurp);
+        return $res;
+    } else {
+        my $res = HTTP::Response->parse($header . $body_f->slurp);
+        $res->request($req);
+        return $res;
+    }
 }
 
 # ------ |LWP::UserAgent::request|-compatibile interface ------
 
 sub simple_request {
-    my ($self, $req) = @_;
+    my ($self, $req, $arg, $size_hint) = @_;
     
-    return execute_request $req;
+    return execute_request $req, $arg, $size_hint;
 }
 
 1;
