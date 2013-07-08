@@ -1,3 +1,4 @@
 *~
-local/
-Makefile.setupenv
+/local/
+/Makefile.setupenv
+/perl

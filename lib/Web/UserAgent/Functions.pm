@@ -14,8 +14,13 @@ our $DEBUG ||= $ENV{WEBUA_DEBUG};
 
 our $DUMP ||= $DEBUG;
 our $DUMP_OUTPUT ||= \*STDERR;
+our $ENABLE_CURL ||= $DEBUG;
 
 our $SOCKSIFYING;
+
+if ($ENABLE_CURL) {
+    *LWP::UserAgent::simple_request = \*LWP::UserAgent::Curl::simple_request;
+}
 
 sub enable_socksify_lwp () {
     $SOCKSIFYING = 1;
@@ -246,6 +251,7 @@ our $MaxRedirect;
 our $SocksProxyURL;
 our $MaxSize;
 our $AcceptSchemes ||= [qw(http https)];
+our $SeqID = int rand 1000000;
 
 sub _http {
     my %args = @_;
@@ -255,7 +261,8 @@ sub _http {
 
     my %lwp_args = (parse_head => 0);
     $lwp_args{timeout} = $args{timeout} || $Timeout || 5;
-    $lwp_args{max_redirect} = $args{max_redirect} || $MaxRedirect;
+    $lwp_args{max_redirect} = defined $args{max_redirect}
+        ? $args{max_redirect} : $MaxRedirect;
     $lwp_args{max_size} = $args{max_size} || $MaxSize
         if defined $args{max_size} || defined $MaxSize;
     $lwp_args{protocols_allowed} = $AcceptSchemes;
@@ -268,7 +275,9 @@ sub _http {
 
     if ($args{basic_auth}) {
         require MIME::Base64;
-        $args{header_fields}->{'Authorization'} ||= 'Basic ' . MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]));
+        my $auth = MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]));
+        $auth =~ s/\s+//g;
+        $args{header_fields}->{'Authorization'} ||= 'Basic ' . $auth;
         $args{header_fields}->{'Authorization'} =~ s/[\x0D\x0A]/ /g;
     }
 
@@ -281,11 +290,14 @@ sub _http {
         }
     }
 
+    my $use_proxy;
     if ($Proxy and not $args{no_proxy} and
         ($UseProxyIfCookie or 
          (not $args{header_fields}->{Cookie} and
           not $args{header_fields}->{cookie}))) {
+        $use_proxy = 1;
         $ua->proxy(http => $Proxy);
+        # LWP::UserAgent does not support https: proxy
     }
 
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
@@ -293,23 +305,25 @@ sub _http {
     }
     $req->content($args{content}) if defined $args{content};
 
+    my $seq_id = $SeqID++;
     $RequestPostprocessor->($req, \%args) if $RequestPostprocessor;
 
     if ($DEBUG or $DUMP) {
         warn "<$args{url}>...\n" if $DEBUG;
-        print $DUMP_OUTPUT "====== REQUEST ======\n";
+        print $DUMP_OUTPUT "====== REQUEST($seq_id) ======\n";
         if ($args{anyevent} and $SocksProxyURL) {
             print $DUMP_OUTPUT "== PROXY $SocksProxyURL ==\n";
         } elsif (not $args{anyevent} and $SOCKSIFYING) {
             print $DUMP_OUTPUT "== SOCKSIFY ==\n";
         }
         if ($DUMP >= 2) {
+            print $DUMP_OUTPUT "TIMEOUT: $lwp_args{timeout}\n";
             print $DUMP_OUTPUT $req->as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+            print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
         } else {
             print $DUMP_OUTPUT $req->method, ' ', $req->uri, ' ', ($req->protocol || ''), "\n";
             print $DUMP_OUTPUT $req->headers_as_string;
-            print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+            print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
         }
     }
 
@@ -318,14 +332,14 @@ sub _http {
         
         if ($DUMP) {
             if ($DUMP >= 2) {
-                print $DUMP_OUTPUT "====== RESPONSE =====\n";
+                print $DUMP_OUTPUT "====== RESPONSE($seq_id) =====\n";
                 print $DUMP_OUTPUT $res->as_string;
-                print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+                print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
             } else {
-                print $DUMP_OUTPUT "====== RESPONSE =====\n";
+                print $DUMP_OUTPUT "====== RESPONSE($seq_id) =====\n";
                 print $DUMP_OUTPUT $res->protocol, ' ', $res->status_line, "\n";
                 print $DUMP_OUTPUT $res->headers_as_string;
-                print $DUMP_OUTPUT "====== WEBUA_F ======\n";
+                print $DUMP_OUTPUT "====== WEBUA_F($seq_id) ======\n";
             }
         }
         
@@ -355,11 +369,21 @@ sub _http {
             require AnyEvent::HTTP::Socks;
             $socks_url = $SocksProxyURL;
         }
+
+        my %ae_args;
+        if ($use_proxy) {
+            if ($Proxy =~ m{^[Hh][Tt][Tt][Pp]://(.+)\:([0-9]+)/?$}) {
+                $ae_args{proxy} = [$1, $2];
+            } elsif ($Proxy =~ m{^(.+):([0-9]+)$}) {
+                $ae_args{proxy} = [$1, $2];
+            }
+        }
         
         my $timer = AE::timer($lwp_args{timeout}, 0, sub {
             my $res = HTTP::Response->new(598, 'Timeout', [], '');
             $res->protocol('HTTP/?.?');
             $res->request($req);
+            $res->content(sprintf 'AE::HTTP timeout (%d)', $lwp_args{timeout});
             $done->($res) if $done;
             undef $done;
         }) if $lwp_args{timeout};
@@ -367,6 +391,8 @@ sub _http {
             $req->method,
             $args{url},
             socks => $socks_url,
+            (defined $lwp_args{max_redirect} ? (recurse => $lwp_args{max_redirect}) : ()),
+            %ae_args,
             body => $req->content,
             headers => {
                 map { s/[\x0D\x0A]/ /g; $_ }
