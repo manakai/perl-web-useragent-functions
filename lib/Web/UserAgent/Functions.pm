@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '3.0';
+our $VERSION = '5.0';
 use Path::Class;
 use LWP::UserAgent;
 use LWP::UserAgent::Curl;
@@ -321,7 +321,7 @@ sub _http {
     my $done = sub {
         my $res = shift;
         
-        if ($DUMP) {
+        if ($DUMP and $res) {
             if ($DUMP >= 2) {
                 print $DUMP_OUTPUT "====== RESPONSE($seq_id) =====\n";
                 print $DUMP_OUTPUT $res->as_string;
@@ -334,7 +334,9 @@ sub _http {
             }
         }
         
-        if ($res->is_success) {
+        if (not $res) { # dry
+            #
+        } elsif ($res->is_success) {
             $args{onsuccess}->($req, $res) if $args{onsuccess};
         } else {
             ($args{onerror} || sub {
@@ -348,8 +350,11 @@ sub _http {
             $args{cb}->($req, $res);
         }
     };
-    
-    if ($args{anyevent}) {
+
+    if ($args{dry}) {
+        $done->(undef);
+        return ($req, undef);
+    } elsif ($args{anyevent}) {
         require AnyEvent;
         require AnyEvent::HTTP;
         require HTTP::Response;
