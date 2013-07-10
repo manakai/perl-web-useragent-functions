@@ -28,7 +28,7 @@ PERL_PATH = $(abspath local/perlbrew/perls/perl-$(PERL_VERSION)/bin)
 
 test: safetest
 
-test-deps: git-submodules local-submodules pmb-install
+test-deps: git-submodules local-submodules pmb-install lperl
 
 GIT = git
 
