@@ -13,6 +13,7 @@ my $is_test_server;
 my %param;
 my @cookie;
 my @header_field;
+my @basic_auth;
 my @oauth;
 my $oauth_method;
 my $method = 'GET';
@@ -36,6 +37,7 @@ GetOptions(
     },
     '--timeout=s' => \$timeout,
     '--header-field=s' => sub { push @header_field, split /:/, $_[1], 2 },
+    '--basic-auth=s' => sub { @basic_auth = split /\s+/, $_[1], 2 },
     '--oauth=s' => sub { @oauth = split /\s+/, $_[1] },
     '--oauth-method=s' => \$oauth_method,
     '--no-body' => \$no_body,
@@ -64,6 +66,7 @@ if ($method eq 'POST') {
         timeout => $timeout,
         is_test_server => $is_test_server,
         header_fields => {@header_field},
+        (@basic_auth ? (basic_auth => \@basic_auth) : ()),
         (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
         params => \%param,
         cookies => {@cookie},
@@ -74,6 +77,7 @@ if ($method eq 'POST') {
         timeout => $timeout,
         is_test_server => $is_test_server,
         header_fields => {@header_field},
+        (@basic_auth ? (basic_auth => \@basic_auth) : ()),
         (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
         params => \%param,
         cookies => {@cookie},
@@ -93,6 +97,11 @@ http.pl - Simple HTTP client
 =head1 OPTIONS
 
 =over 4
+
+=item --basic-auth="NAME PASS"
+
+Enables the HTTP basic authorization with the specified user name and
+password.
 
 =item --class=PERL::PACKAGE::NAME
 
@@ -141,8 +150,8 @@ Disable printing of request-body and response-body.
 
 =item --oauth="CONSUMER_TOKEN CONSUMER_SECRET ACCESS_TOKEN ACCESS_SECRET"
 
-Enable OAuth support, with specified consumer- and access- tokens and
-secrets.  The value of this option must contain four (4) values
+Enable OAuth 1.0a support, with specified consumer- and access- tokens
+and secrets.  The value of this option must contain four (4) values
 separated by spaces.
 
 =item --param=NAME=VALUE
