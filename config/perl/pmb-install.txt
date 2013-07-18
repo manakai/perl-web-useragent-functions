@@ -47,3 +47,4 @@ IO::Socket::SSL~1.76
 Class::Data::Inheritable~0.08
 List::Rubyish~0.03
 Carp~1.26
+Digest::SHA1

@@ -14,6 +14,7 @@ my %param;
 my @cookie;
 my @header_field;
 my @basic_auth;
+my @wsse_auth;
 my @oauth;
 my $oauth_method;
 my $method = 'GET';
@@ -38,6 +39,7 @@ GetOptions(
     '--timeout=s' => \$timeout,
     '--header-field=s' => sub { push @header_field, split /:/, $_[1], 2 },
     '--basic-auth=s' => sub { @basic_auth = split /\s+/, $_[1], 2 },
+    '--wsse-auth=s' => sub { @wsse_auth = split /\s+/, $_[1], 2 },
     '--oauth=s' => sub { @oauth = split /\s+/, $_[1] },
     '--oauth-method=s' => \$oauth_method,
     '--no-body' => \$no_body,
@@ -67,6 +69,7 @@ if ($method eq 'POST') {
         is_test_server => $is_test_server,
         header_fields => {@header_field},
         (@basic_auth ? (basic_auth => \@basic_auth) : ()),
+        (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
         (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
         params => \%param,
         cookies => {@cookie},
@@ -78,6 +81,7 @@ if ($method eq 'POST') {
         is_test_server => $is_test_server,
         header_fields => {@header_field},
         (@basic_auth ? (basic_auth => \@basic_auth) : ()),
+        (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
         (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
         params => \%param,
         cookies => {@cookie},
@@ -176,6 +180,11 @@ Set the HTTP request method to C<POST>.
 The URL to retrieve.  This option is required.  It must be an absolute
 URL.
 
+=item --wsse-auth="NAME PASS"
+
+Enables the WSSE authorization with the specified user name and
+password.
+
 =back
 
 =head1 SEE ALSO
@@ -188,7 +197,7 @@ Wakaba <wakabatan@hatena.ne.jp>.
 
 =head1 LICENSE
 
-Copyright 2011-2012 Hatena <http://www.hatena.ne.jp/>.
+Copyright 2011-2013 Hatena <http://www.hatena.ne.jp/>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

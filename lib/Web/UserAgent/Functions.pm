@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '5.0';
+our $VERSION = '6.0';
 use Path::Class;
 use LWP::UserAgent;
 use LWP::UserAgent::Curl;
@@ -275,10 +275,38 @@ sub _http {
 
     if ($args{basic_auth}) {
         require MIME::Base64;
-        my $auth = MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]));
+        my $auth = MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]), '');
         $auth =~ s/\s+//g;
-        $args{header_fields}->{'Authorization'} ||= 'Basic ' . $auth;
-        $args{header_fields}->{'Authorization'} =~ s/[\x0D\x0A]/ /g;
+        $args{header_fields}->{'Authorization'} ||= [];
+        push @{$args{header_fields}->{'Authorization'}}, 'Basic ' . $auth;
+        $args{header_fields}->{'Authorization'}->[-1] =~ s/[\x0D\x0A]/ /g;
+    }
+
+    if ($args{wsse_auth}) {
+        # <http://suika.suikawiki.org/~wakaba/wiki/sw/n/WSSE>
+
+        require MIME::Base64;
+        require Digest::SHA1;
+        my $user = $args{wsse_auth}->[0];
+        my $pass = $args{wsse_auth}->[1];
+
+        my ($s, $m, $h, $d, $M, $y) = gmtime;
+        my $now = sprintf '%04d-%02d-%02dT%02d:%02d:%02dZ',
+            $y+1900, $M+1, $d, $h, $m, $s;
+
+        my $nonce = Digest::SHA1::sha1(time() . {} . rand() . $$);
+        my $nonce_b64 = MIME::Base64::encode_base64($nonce, '');
+        my $digest = MIME::Base64::encode_base64(
+            Digest::SHA1::sha1($nonce . $now . $pass), '',
+        );
+        
+        $user =~ s/"/\\"/g;
+        $args{header_fields}->{Authorization} ||= [];
+        push @{$args{header_fields}->{Authorization}},
+            'WSSE profile="UsernameToken"';
+        $args{header_fields}->{'X-WSSE'} = sprintf 'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+            $user, $digest, $nonce_b64, $now;
+        $args{header_fields}->{'X-WSSE'} =~ s/[\x0D\x0A]/ /g;
     }
 
     for (qw(
@@ -301,7 +329,11 @@ sub _http {
     }
 
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
-        $req->header($n => $v);
+        if (ref $v eq 'ARRAY') {
+            $req->push_header($n => $_) for @$v;
+        } else {
+            $req->push_header($n => $v);
+        }
     }
     $req->content($args{content}) if defined $args{content};
 
