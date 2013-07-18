@@ -62,6 +62,7 @@ sub serialize_form_urlencoded ($) {
 
 sub http_get (%) {
     my %args = @_;
+    my $http_method = $args{override_method} || 'GET';
 
     if ($args{oauth}) {
         require OAuth::Lite::Consumer;
@@ -86,7 +87,7 @@ sub http_get (%) {
         );
         my $params = {map { ref $_ eq 'ARRAY' ? [map { encode 'utf-8', $_ } @$_] : encode 'utf-8', $_ } %{$args{params} or {}}};
         my $oauth_req = $consumer->gen_oauth_request(
-            method => 'GET',
+            method => $http_method,
             url => $args{url},
             token => $access_token,
             params => $params,
@@ -107,7 +108,7 @@ sub http_get (%) {
         }
     }
 
-    return _http(%args, method => $args{override_method} || 'GET');
+    return _http(%args, method => $http_method);
 }
 
 my @boundary_alphabet = ('a'..'z', '0'..'9');
@@ -120,6 +121,7 @@ sub mime_param_value ($) {
 
 sub http_post (%) {
     my %args = @_;
+    my $http_method = $args{override_method} || 'POST';
 
     my $content;
     if ($args{oauth}) {
@@ -149,12 +151,12 @@ sub http_post (%) {
         );
         my $params = {map { ref $_ eq 'ARRAY' ? [map { encode 'utf-8', $_ } @$_] : encode 'utf-8', $_ } %{$args{params} or {}}};
         if ($use_query) {
-            my $query = join '&', grep { /^oauth_/ } split /&/, $consumer->gen_auth_query('POST', $args{url}, $access_token, $params);
+            my $query = join '&', grep { /^oauth_/ } split /&/, $consumer->gen_auth_query($http_method, $args{url}, $access_token, $params);
             $args{url} .= '?' . $query;
             $content = serialize_form_urlencoded $args{params};
         } else {
             my $oauth_req = $consumer->gen_oauth_request(
-                method => 'POST',
+                method => $http_method,
                 url => $args{url},
                 token => $access_token,
                 params => $params,
@@ -222,25 +224,69 @@ sub http_post (%) {
         }
     }
     $args{header_fields}->{'Content-Type'} ||= 'application/x-www-form-urlencoded';
-    return _http(content => $content, %args, method => $args{override_method} || 'POST');
+    return _http(content => $content, %args, method => $http_method);
 }
 
 sub http_post_data (%) {
     my %args = @_;
+    my $http_method = $args{override_method} || 'POST';
+
+    if ($args{oauth}) {
+        require OAuth::Lite::Consumer;
+        require OAuth::Lite::Token;
+        require OAuth::Lite::AuthMethod;
+        
+        my $oauth_method = $args{oauth_method} || 'authorization';
+        my $use_query;
+        if ($oauth_method eq 'query') {
+            $oauth_method = OAuth::Lite::AuthMethod::URL_QUERY();
+            $use_query = 1;
+        } else {
+            $oauth_method = OAuth::Lite::AuthMethod::AUTH_HEADER();
+        }
+
+        my $consumer = OAuth::Lite::Consumer->new(
+            consumer_key => $args{oauth}->[0],
+            consumer_secret => $args{oauth}->[1],
+            auth_method => $oauth_method,
+        );
+        my $access_token = OAuth::Lite::Token->new(
+            token => $args{oauth}->[2],
+            secret => $args{oauth}->[3],
+        );
+        my $params = {map { ref $_ eq 'ARRAY' ? [map { encode 'utf-8', $_ } @$_] : encode 'utf-8', $_ } %{$args{params} or {}}};
+        if ($use_query) {
+            my $query = join '&', grep { /^oauth_/ } split /&/, $consumer->gen_auth_query($http_method, $args{url}, $access_token, $params);
+            $args{url} .= '?' . $query;
+            my $q = serialize_form_urlencoded $args{params};
+            $args{url} .= '&' . $q if defined $q and length $q;
+        } else {
+            my $oauth_req = $consumer->gen_oauth_request(
+                method => $http_method,
+                url => $args{url},
+                token => $access_token,
+                params => $params,
+            );
+            my $authorization = $oauth_req->header('Authorization');
+            if ($authorization) {
+                $args{header_fields}->{Authorization} = $authorization;
+            }
+        }
+    } else {
+        my $query = serialize_form_urlencoded $args{params};
+        if (length $query) {
+            if ($args{url} =~ /\?/) {
+                $args{url} .= '&' . $query;
+            } else {
+                $args{url} .= '?' . $query;
+            }
+        }
+    }
 
     $args{header_fields}->{'Content-Type'} = $args{content_type}
         if defined $args{content_type};
 
-    my $query = serialize_form_urlencoded $args{params};
-    if (length $query) {
-        if ($args{url} =~ /\?/) {
-            $args{url} .= '&' . $query;
-        } else {
-            $args{url} .= '?' . $query;
-        }
-    }
-
-    return _http(%args, method => $args{override_method} || 'POST');
+    return _http(%args, method => $http_method);
 }
 
 our $Proxy;
@@ -277,9 +323,8 @@ sub _http {
         require MIME::Base64;
         my $auth = MIME::Base64::encode_base64(encode 'utf-8', ($args{basic_auth}->[0] . ':' . $args{basic_auth}->[1]), '');
         $auth =~ s/\s+//g;
-        $args{header_fields}->{'Authorization'} ||= [];
-        push @{$args{header_fields}->{'Authorization'}}, 'Basic ' . $auth;
-        $args{header_fields}->{'Authorization'}->[-1] =~ s/[\x0D\x0A]/ /g;
+        $args{header_fields}->{'Authorization'} = 'Basic ' . $auth;
+        $args{header_fields}->{'Authorization'} =~ s/[\x0D\x0A]/ /g;
     }
 
     if ($args{wsse_auth}) {
@@ -300,10 +345,8 @@ sub _http {
             Digest::SHA1::sha1($nonce . $now . $pass), '',
         );
         
-        $user =~ s/"/\\"/g;
-        $args{header_fields}->{Authorization} ||= [];
-        push @{$args{header_fields}->{Authorization}},
-            'WSSE profile="UsernameToken"';
+        $user =~ s/(["\\])/\\$1/g;
+        $args{header_fields}->{Authorization} = 'WSSE profile="UsernameToken"';
         $args{header_fields}->{'X-WSSE'} = sprintf 'UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
             $user, $digest, $nonce_b64, $now;
         $args{header_fields}->{'X-WSSE'} =~ s/[\x0D\x0A]/ /g;

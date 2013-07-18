@@ -20,6 +20,7 @@ my $oauth_method;
 my $method = 'GET';
 my $no_body;
 my $timeout;
+my $body;
 
 GetOptions(
     '--class=s' => \$class,
@@ -43,13 +44,14 @@ GetOptions(
     '--oauth=s' => sub { @oauth = split /\s+/, $_[1] },
     '--oauth-method=s' => \$oauth_method,
     '--no-body' => \$no_body,
+    '--body=s' => sub { $body = $_[1] },
     '--help' => sub { pod2usage(-verbose => 2) },
 ) or pod2usage(1);
 
 pod2usage(1) unless $url and $class and $method;
 
 eval qq{ require $class } or die $@;
-$class->import(qw(http_get http_post));
+$class->import(qw(http_get http_post http_post_data));
 
 {
     no warnings 'once';
@@ -63,17 +65,32 @@ $class->import(qw(http_get http_post));
 
 my ($req, $res);
 if ($method eq 'POST') {
-    ($req, $res) = http_post(
-        url => $url,
-        timeout => $timeout,
-        is_test_server => $is_test_server,
-        header_fields => {@header_field},
-        (@basic_auth ? (basic_auth => \@basic_auth) : ()),
-        (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
-        (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
-        params => \%param,
-        cookies => {@cookie},
-    );
+    if (defined $body) {
+        ($req, $res) = http_post_data(
+            url => $url,
+            timeout => $timeout,
+            is_test_server => $is_test_server,
+            header_fields => {@header_field},
+            (@basic_auth ? (basic_auth => \@basic_auth) : ()),
+            (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
+            (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
+            params => \%param,
+            cookies => {@cookie},
+            content => $body,
+        );
+    } else {
+        ($req, $res) = http_post(
+            url => $url,
+            timeout => $timeout,
+            is_test_server => $is_test_server,
+            header_fields => {@header_field},
+            (@basic_auth ? (basic_auth => \@basic_auth) : ()),
+            (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
+            (@oauth ? (oauth => \@oauth, oauth_method => $oauth_method) : ()),
+            params => \%param,
+            cookies => {@cookie},
+        );
+    }
 } else {
     ($req, $res) = http_get(
         url => $url,
@@ -106,6 +123,11 @@ http.pl - Simple HTTP client
 
 Enables the HTTP basic authorization with the specified user name and
 password.
+
+=item --body=STRING
+
+Specify the response body.  This option is ignored unless the
+C<--post> option is also specified.
 
 =item --class=PERL::PACKAGE::NAME
 
