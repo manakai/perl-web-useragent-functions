@@ -17,6 +17,7 @@ sub execute_request ($$$) {
     my (undef, $header_file_name) = tempfile;
     my (undef, $body_file_name) = (defined $arg and not ref $arg eq 'CODE')
         ? (undef, $arg) : tempfile;
+    my (undef, $req_body_file_name) = tempfile;
     
     $req->remove_header('Accept-Encoding') if $Debug;
     my @header;
@@ -27,7 +28,7 @@ sub execute_request ($$$) {
 
     if ($Debug) {
         print STDERR "========== REQUEST ==========\n";
-        print STDERR $req->method eq 'POST' ? 'POST' : 'GET';
+        print STDERR $req->method;
         print STDERR ' ', $req->uri, "\n";
         print STDERR $_, "\n" for @header;
         print STDERR "\n";
@@ -36,11 +37,18 @@ sub execute_request ($$$) {
     }
     
     my @opt = (map { ('--header' => $_) } @header);
-    push @opt, ('--data-binary' => $req->content) if $req->method eq 'POST';
+    {
+        open my $req_body_file, '>', $req_body_file_name
+            or die "$0: $req_body_file_name: $!";
+        print $req_body_file $req->content;
+        close $req_body_file;
+    }
+    push @opt, ('--data-binary' => '@' . $req_body_file_name);
 
     system 'curl',
         '--dump-header' => $header_file_name,
         -o => $body_file_name,
+        '-X' => scalar $req->method,
         @opt,
         $req->uri;
     
