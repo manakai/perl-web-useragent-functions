@@ -2,3 +2,8 @@
 /local/
 /Makefile.setupenv
 /perl
+/prove
+/plackup
+/cin
+/config/perl/libs.txt
+/deps/
