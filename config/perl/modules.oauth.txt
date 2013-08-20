@@ -1,3 +1,8 @@
+Carp
+Diget::SHA
+Encode
+MIME::Base64
+
 OAuth::Lite::AuthMethod
 OAuth::Lite::Consumer
 OAuth::Lite::Token
