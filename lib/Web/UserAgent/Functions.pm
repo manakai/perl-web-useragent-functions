@@ -14,7 +14,7 @@ our $DEBUG ||= $ENV{WEBUA_DEBUG};
 
 our $DUMP ||= $DEBUG;
 our $DUMP_OUTPUT ||= \*STDERR;
-our $ENABLE_CURL ||= $DEBUG;
+our $ENABLE_CURL;
 
 our $SOCKSIFYING;
 
