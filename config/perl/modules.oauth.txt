@@ -1,5 +1,5 @@
 Carp
-Diget::SHA
+Digest::SHA
 Encode
 MIME::Base64
 
