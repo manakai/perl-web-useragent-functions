@@ -194,8 +194,8 @@ sub create_request_params {
         while ($header =~ s/^([^=\x09\x0A\x0D\x20]+)="([^\\"]*)"(?:,[\x09\x0A\x0D\x20]*)?//) {
             my ($n, $v) = ($1, $2);
             next if $n =~ /\A[Rr][Ee][Aa][Ll][Mm]\z/;
-            $n =~ s/%([0-9A-Fa-f]{2})/pack 'C', hex, $1/ge;
-            $v =~ s/%([0-9A-Fa-f]{2})/pack 'C', hex, $1/ge;
+            $n =~ s/%([0-9A-Fa-f]{2})/pack 'C', hex $1/ge;
+            $v =~ s/%([0-9A-Fa-f]{2})/pack 'C', hex $1/ge;
             push @param, [$n => $v];
         }
     }
