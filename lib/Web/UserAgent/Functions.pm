@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '6.0';
+our $VERSION = '7.0';
 use Path::Class;
 use LWP::UserAgent;
 use LWP::UserAgent::Curl;
@@ -352,12 +352,14 @@ sub _http {
         $args{header_fields}->{'X-WSSE'} =~ s/[\x0D\x0A]/ /g;
     }
 
-    for (qw(
-        Cookie cookie Authorization authorization X-WSSE x-wsse
-        X-Hatena-Star-Key
-    )) {
-        if ($args{header_fields}->{$_}) {
-            $lwp_args{max_redirect} = 0;
+    if (defined $lwp_args{max_redirect} and $lwp_args{max_redirect} > 0) {
+        for (qw(
+            Cookie cookie Authorization authorization X-WSSE x-wsse
+            X-Hatena-Star-Key
+        )) {
+            if ($args{header_fields}->{$_}) {
+                $lwp_args{max_redirect} = 0;
+            }
         }
     }
 
@@ -467,7 +469,7 @@ sub _http {
             $done->($res) if $done;
             undef $done;
         }) if $lwp_args{timeout};
-        $aeclass->can('http_request')->(
+        my @req_args = (
             $req->method,
             $args{url},
             socks => $socks_url,
@@ -478,24 +480,44 @@ sub _http {
                 map { s/[\x0D\x0A]/ /g; $_ }
                 map { ( $_ => $req->header($_) ) } $req->header_field_names
             },
+        );
+        my $process_res = sub {
+            my ($body, $headers) = @_;
+            my $code = delete $headers->{Status};
+            my $msg = delete $headers->{Reason};
+            my $http_version = 'HTTP/' .
+                (delete $headers->{HTTPVersion} || '?.?');
+            my $res = HTTP::Response->new(
+                $code,
+                $msg,
+                [map { $_ => $headers->{$_} } grep { not /[A-Z]/ } keys %$headers],
+                $body,
+            );
+            $res->protocol($http_version);
+            $res->request($req);
+            $done->($res) if $done;
+            undef $done;
+            undef $timer;
+        };
+        $aeclass->can('http_request')->(
+            @req_args,
             sub {
                 my ($body, $headers) = @_;
-                my $code = delete $headers->{Status};
-                my $msg = delete $headers->{Reason};
-                my $http_version = 'HTTP/' .
-                    (delete $headers->{HTTPVersion} || '?.?');
-                my $res = HTTP::Response->new(
-                    $code,
-                    $msg,
-                    [map { $_ => $headers->{$_} }
-                     grep { not /[A-Z]/ } keys %$headers],
-                    $body,
-                );
-                $res->protocol($http_version);
-                $res->request($req);
-                $done->($res) if $done;
-                undef $done;
-                undef $timer;
+                if ($headers->{Status} == 599 and
+                    $headers->{Reason} eq 'Too many redirections' and
+                    defined $lwp_args{max_redirect} and
+                    $lwp_args{max_redirect} == 0) {
+                    ## AnyEvent 2.15 fails to retry the request if the
+                    ## keep-alived connection has just closed and
+                    ## |recurse| == 0.
+                    $aeclass->can('http_request')->(
+                        @req_args,
+                        keepalive => 0,
+                        $process_res,
+                    );
+                } else {
+                    $process_res->(@_);
+                }
             },
         );
         return ($req, undef);
