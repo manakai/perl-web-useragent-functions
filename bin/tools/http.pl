@@ -21,10 +21,12 @@ my $method = 'GET';
 my $no_body;
 my $timeout;
 my $body;
+my $max_redirect = 0;
 
 GetOptions(
     '--class=s' => \$class,
     '--url=s' => \$url,
+    '--follow-redirect' => sub { $max_redirect = 10 },
     '--is-test-server' => \$is_test_server,
     '--get' => sub { $method = 'GET' },
     '--post' => sub { $method = 'POST' },
@@ -70,6 +72,7 @@ if ($method eq 'POST') {
             url => $url,
             timeout => $timeout,
             is_test_server => $is_test_server,
+            max_redirect => $max_redirect,
             header_fields => {@header_field},
             (@basic_auth ? (basic_auth => \@basic_auth) : ()),
             (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
@@ -83,6 +86,7 @@ if ($method eq 'POST') {
             url => $url,
             timeout => $timeout,
             is_test_server => $is_test_server,
+            max_redirect => $max_redirect,
             header_fields => {@header_field},
             (@basic_auth ? (basic_auth => \@basic_auth) : ()),
             (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
@@ -96,6 +100,7 @@ if ($method eq 'POST') {
         url => $url,
         timeout => $timeout,
         is_test_server => $is_test_server,
+        max_redirect => $max_redirect,
         header_fields => {@header_field},
         (@basic_auth ? (basic_auth => \@basic_auth) : ()),
         (@wsse_auth ? (wsse_auth => \@wsse_auth) : ()),
@@ -148,6 +153,11 @@ If you don't want name and values to be encoded, or if you want to
 control order of name-value pairs, or if you want to use same name
 multiple times, please specify the entire C<Cookie:> header field
 using the C<--header-field> option.
+
+=item --follow-redirect
+
+If specified, follow HTTP redirects.  Otherwise it does not follow any
+redirect and show the redirect response.
 
 =item --header-field=NAME:BODY
 
