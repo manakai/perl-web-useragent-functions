@@ -352,12 +352,18 @@ sub _http {
         $args{header_fields}->{'X-WSSE'} =~ s/[\x0D\x0A]/ /g;
     }
 
+    my $has_header = {};
+    for (keys %{$args{header_fields} or {}}) {
+        my $name = $_;
+        $name =~ tr/A-Z/a-z/; ## ASCII case-insensitive.
+        $has_header->{$name} = 1;
+    }
+
     if (defined $lwp_args{max_redirect} and $lwp_args{max_redirect} > 0) {
         for (qw(
-            Cookie cookie Authorization authorization X-WSSE x-wsse
-            X-Hatena-Star-Key
+            cookie authorization x-wsse x-hatena-star-key
         )) {
-            if ($args{header_fields}->{$_}) {
+            if ($has_header->{$_}) {
                 $lwp_args{max_redirect} = 0;
             }
         }
@@ -365,9 +371,7 @@ sub _http {
 
     my $use_proxy;
     if ($Proxy and not $args{no_proxy} and
-        ($UseProxyIfCookie or 
-         (not $args{header_fields}->{Cookie} and
-          not $args{header_fields}->{cookie}))) {
+        ($UseProxyIfCookie or not $has_header->{cookie})) {
         $use_proxy = 1;
         $ua->proxy(http => $Proxy);
         # LWP::UserAgent does not support https: proxy
