@@ -64,6 +64,10 @@ sub http_get (%) {
     my %args = @_;
     my $http_method = $args{override_method} || 'GET';
 
+    if (not defined $args{url}) {
+      $args{url} = ($args{url_scheme} || 'http') . '://' . $args{host} . $args{pathquery};
+    }
+
     if ($args{oauth}) {
         require OAuth::Lite::Consumer;
         require OAuth::Lite::Token;
@@ -122,6 +126,10 @@ sub mime_param_value ($) {
 sub http_post (%) {
     my %args = @_;
     my $http_method = $args{override_method} || 'POST';
+
+    if (not defined $args{url}) {
+      $args{url} = ($args{url_scheme} || 'http') . '://' . $args{host} . $args{pathquery};
+    }
 
     my $content;
     if ($args{oauth}) {
@@ -230,6 +238,10 @@ sub http_post (%) {
 sub http_post_data (%) {
     my %args = @_;
     my $http_method = $args{override_method} || 'POST';
+
+    if (not defined $args{url}) {
+      $args{url} = ($args{url_scheme} || 'http') . '://' . $args{host} . $args{pathquery};
+    }
 
     if ($args{oauth}) {
         require OAuth::Lite::Consumer;

@@ -1,7 +1,7 @@
 package Web::UserAgent::OAuth;
 use strict;
 use warnings;
-our $VERSION = '1.0';
+our $VERSION = '2.0';
 require utf8;
 use Carp qw(croak);
 use Encode;
@@ -11,6 +11,14 @@ use MIME::Base64;
 sub new {
     my $class = shift;
     return bless {@_}, $class;
+}
+
+sub reset {
+  my $self = $_[0];
+  delete $self->{$_} for qw(
+    request_url http_authorization form_body
+    oauth_params
+  );
 }
 
 sub oauth_consumer_key {
@@ -39,6 +47,13 @@ sub token_shared_secret {
         $_[0]->{token_shared_secret} = $_[1];
     }
     return $_[0]->{token_shared_secret};
+}
+
+sub oauth_verifier {
+    if (@_ > 1) {
+        $_[0]->{oauth_verifier} = $_[1];
+    }
+    return $_[0]->{oauth_verifier};
 }
 
 sub oauth_signature_method {
@@ -167,12 +182,14 @@ sub create_base_string_url {
 sub create_oauth_params {
     my $self = $_[0];
     my @param;
-    for my $key (qw(oauth_consumer_key oauth_token oauth_signature_method
+    for my $key (qw(oauth_consumer_key oauth_signature_method
                     oauth_timestamp oauth_nonce oauth_version)) {
         my $value = $self->$key;
         croak "|$key| is not set" unless defined $value;
         push @param, [$key => $value];
     }
+    for ($self->oauth_token) { push @param, [oauth_token => $_] if defined $_ }
+    for ($self->oauth_verifier) { push @param, [oauth_verifier => $_] if defined $_ }
     return $self->{oauth_params} = \@param;
 }
 

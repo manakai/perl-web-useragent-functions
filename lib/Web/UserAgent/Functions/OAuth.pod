@@ -1,0 +1,178 @@
+=head1 NAME
+
+Web::UserAgent::Functions::OAuth - Function-based API for OAuth authorization process
+
+=head1 DESCRIPTION
+
+The C<Web::UserAgent::Functions::OAuth> module exports several
+functions implementing OAuth 1.0a (RFC 5849) redirect-based
+authorization process.
+
+For using OAuth to access protected Web APIs, functions exported by
+L<Web::UserAgent::Functions> will be useful.
+
+=head1 FUNCTIONS
+
+=over 4
+
+=item RETURN = http_oauth1_request_temp_credentials OPTIONS
+
+Obtain the temporary credentials (i.e. Request Token and Secret) by
+accessing Temporary Credentials Request endpoint.
+
+The C<host> and C<pathquery> options are required.  The C<url_scheme>
+option, whose default is C<https>, may be specified.  Their values
+must be byte strings, containing parts of ASCII representation of the
+URL of the endpoint.  For example,
+C<https://myfavoritservice.example:10000/oauth/1?a> can be represented
+as:
+
+  url_scheme => 'https',
+  host => 'myfavoriteservice.example:10000',
+  pathquery => '/oauth/1?a',
+
+The C<params> option can be used to specify additional (non-OAuth)
+parameters, if necessary.  Its value must be a hash reference, in the
+same format as the C<http_post> function of the
+L<Web::UserAgent::Functions> module.  Example:
+
+  params => {scope => join ',', @scope},
+
+The C<oauth_consumer_key> option must be specified.  Its value is the
+identifier of the client credentials (i.e. OAuth consumer key).  The
+C<client_shared_secret> option must also be specified.  Its value is
+the client shared-secret (i.e. OAuth consumer secret).
+
+The C<oauth_callback> option must be a URL or the string C<oob>.  Its
+value is used as the C<oauth_callback> parameter.  It will be the URL
+to which the user is redirected by the Resource Owner Authorization
+endpoint.  If the option is not specified, the default value C<oob> is
+used instead.
+
+The C<auth> option must be specified.  Its value is a hash reference.
+The hash reference can contain options applicable to the
+C<http_oauth1_get_auth_url> function, except for the C<temp_token>
+option.  If the C<host> option is not specified, the C<host> option
+for the function is used instead.  If the C<url_scheme> option is not
+specified, the C<url_scheme> option for the function, if specified, or
+its default value is used instead.  Anyway, they are used to construct
+the Resource Owner Authorization URL.
+
+The C<anyevent> and C<cb> options may also be specified.  For their
+semantics, see C<http_post> function of the
+L<Web::UserAgent::Functions> module.  If the callback is specified,
+return values are used as the arguments to the callback.  Otherwise,
+return values are used as the return values of the function.
+
+The function's return values are the list of three values: The
+temporary credentials identifier (i.e. the Request Token), the
+temporary credentials shared-secret (i.e. the Request Token Secret),
+and the Resource Owner Authorization URL.  If the Temporary
+Credentials Request endpoint returns failure, C<undef> values are
+returned instead.
+
+The function does not throw any exception unless some of input is
+broken.
+
+=item RETURN = http_oauth1_request_token OPTIONS
+
+Obtain the token credentials (i.e. Access Token and Secret) by
+accessing Token Request endpoint.
+
+The C<host> and C<pathquery> options are required.  The C<url_scheme>
+option, whose default is C<https>, may be specified.  Their values
+must be byte strings, containing parts of ASCII representation of the
+URL of the endpoint.
+
+If the function is invoked to process the request that happens as the
+result of the redirect by the Resource Owner Authorization endpoint
+(i.e. it's in the callback URL's processing), the C<oauth_verifier>
+query parameter must be specified as the value of the
+C<oauth_verifier> option and the C<oauth_token> query parameter must
+be specified as the value of the C<current_request_oauth_token>
+option.  For the ease of debugging purpose only, the entire request
+URL of such an HTTP request may be specified as the
+C<current_request_url> option, instead.  However, you should not use
+this option in production.
+
+If the function is invoked to process the verifier code shown to the
+user by the C<oob> callback page, the verifier code must be specified
+as the value of the C<oauth_verifier> option.
+
+The C<anyevent> and C<cb> options may also be specified.  For their
+semantics, see C<http_post> function of the
+L<Web::UserAgent::Functions> module.  If the callback is specified,
+return values are used as the arguments to the callback.  Otherwise,
+return values are used as the return values of the function.
+
+The function's return values are the list of three values: The token
+credentials identifier (i.e. the Access Token), the token credentials
+shared-secret (i.e. the Access Token Secret), and the hash reference.
+The hash reference contains any additional data provided by the
+server, decoded as UTF-8 string, if any.  For example, Twitter
+provides the user ID as C<user_id>.  If the Token Request endpoint
+returns failure, two C<undef> values and the empty hash reference are
+returned instead.
+
+The function does not throw any exception unless some of input is
+broken.
+
+=item RETURN = http_oauth1_get_auth_url OPTIONS
+
+THIS FUNCTION IS NOT EXPORTED BY DEFAULT.
+
+Construct the Resource Owner Authorization URL, i.e. the URL the user
+should be redirected into.  You are usually not required to invoke
+this function as it is implicitly invoked within
+C<http_oauth1_request_temp_credentials>.
+
+Either the C<url> option or the combination of C<host> and
+C<pathquery> options is required.  In the latter case, the
+C<url_scheme> option, whose default is C<https>, may be specified.
+They represents the base part of the authorization URL.  For example:
+
+  url => q<https://goodsite.example:8000/oauth/authorize?good=yes>
+
+or
+
+  url_scheme => 'https', host => 'goodsite.example:8000',
+  pathquery => '/oauth/authorize?good=yes',
+
+Their values must be byte strings, containing entire or parts of ASCII
+representation of URL.
+
+In addition, the C<temp_token> option must be specified.  Its value
+must be the token of the temporary credential, i.e. the first return
+value of C<http_oauth1_request_temp_credentials>.  It must be a byte
+string.
+
+The function returns the constructed URL as a byte string.
+
+=back
+
+=head1 DEMO
+
+The "sketch" directory of the Git repository of the module contains
+demo scripts using functions exported by this module, including:
+
+  sketch/oauth-auth-twitter.pl   Twitter
+  sketch/oauth-auth-hatena.pl    Hatena
+
+=head1 SEE ALSO
+
+The OAuth 1.0 Protocol <http://tools.ietf.org/html/rfc5849>.
+
+L<Web::UserAgent::Functions>.
+
+=head1 AUTHOR
+
+Wakaba <wakaba@suikawiki.org>.
+
+=head1 LICENSE
+
+Copyright 2013 Wakaba <wakaba@suikawiki.org>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
