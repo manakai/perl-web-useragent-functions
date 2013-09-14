@@ -8,8 +8,8 @@ use base qw(Test::Class);
 use Test::More;
 use Web::UserAgent::Functions::OAuth;
 
-is http_oauth1_get_auth_url (url => q<http://hoge/fuga?a#b>,
-                             temp_token => q<a+?b=>),
+is Web::UserAgent::Functions::OAuth::http_oauth1_get_auth_url
+    (url => q<http://hoge/fuga?a#b>, temp_token => q<a+?b=>),
     q<http://hoge/fuga?a&oauth_token=a%2B%3Fb%3D>;
 
 done_testing;
