@@ -162,7 +162,7 @@ sub http_oauth1_request_token (%) {
         } else {
           warn "<@{[$req->uri]}>: Not OAuth response\n";
         }
-        $args{cb}->($token, $token_secret) if $args{cb};
+        $args{cb}->($token, $token_secret, \%param) if $args{cb};
       };
   return ($token, $token_secret, \%param);
 } # http_oauth1_request_token
