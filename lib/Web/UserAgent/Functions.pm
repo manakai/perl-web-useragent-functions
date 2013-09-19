@@ -1,10 +1,8 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '7.0';
+our $VERSION = '8.0';
 use Path::Class;
-use LWP::UserAgent;
-use LWP::UserAgent::Curl;
 use Encode;
 use Exporter::Lite;
 
@@ -19,11 +17,15 @@ our $ENABLE_CURL;
 our $SOCKSIFYING;
 
 if ($ENABLE_CURL) {
+    require LWP::UserAgent;
+    require LWP::UserAgent::Curl;
     *LWP::UserAgent::simple_request = \*LWP::UserAgent::Curl::simple_request;
 }
 
 sub enable_socksify_lwp () {
     $SOCKSIFYING = 1;
+    require LWP::UserAgent;
+    require LWP::UserAgent::Curl;
     *LWP::UserAgent::simple_request = \*LWP::UserAgent::Curl::simple_request;
     print STDERR "Enabled ".__PACKAGE__." socksify support\n";
 }
@@ -314,9 +316,6 @@ our $SeqID = int rand 1000000;
 sub _http {
     my %args = @_;
 
-    my $class = 'LWP::UserAgent';
-    $class .= '::Curl' if $SOCKSIFYING;
-
     my %lwp_args = (parse_head => 0);
     $lwp_args{timeout} = $args{timeout} || $Timeout || 5;
     $lwp_args{max_redirect} = defined $args{max_redirect}
@@ -324,9 +323,6 @@ sub _http {
     $lwp_args{max_size} = $args{max_size} || $MaxSize
         if defined $args{max_size} || defined $MaxSize;
     $lwp_args{protocols_allowed} = $AcceptSchemes;
-    
-    my $ua = $class->new(%lwp_args);
-    my $req = HTTP::Request->new($args{method} => $args{url});
     
     # If you don't need percent-encode, use |header_fields| instead.
     $args{header_fields}->{Cookie} ||= join '; ', map { (percent_encode_c $_->[0]) . '=' . percent_encode_c $_->[1] } grep { defined $_->[1] } map { [$_ => $args{cookies}->{$_}] } sort { $a cmp $b } keys %{$args{cookies}} if $args{cookies};
@@ -385,10 +381,9 @@ sub _http {
     if ($Proxy and not $args{no_proxy} and
         ($UseProxyIfCookie or not $has_header->{cookie})) {
         $use_proxy = 1;
-        $ua->proxy(http => $Proxy);
-        # LWP::UserAgent does not support https: proxy
     }
 
+    my $req = HTTP::Request->new($args{method} => $args{url});
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
         if (ref $v eq 'ARRAY') {
             $req->push_header($n => $_) for @$v;
@@ -538,6 +533,17 @@ sub _http {
         );
         return ($req, undef);
     } else {
+        my $class = 'LWP::UserAgent';
+        if ($SOCKSIFYING) {
+            $class .= '::Curl';
+        }
+        eval qq{ require $class } or die $@;
+        my $ua = $class->new(%lwp_args);
+        if ($use_proxy) {
+            $ua->proxy(http => $Proxy);
+            # LWP::UserAgent does not support https: proxy
+        }
+
         my $res;
         {
             local $@;

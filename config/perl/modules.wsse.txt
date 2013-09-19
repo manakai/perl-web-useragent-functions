@@ -1,0 +1,2 @@
+Digest::SHA1
+MIME::Base64

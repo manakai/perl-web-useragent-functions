@@ -1,9 +1,3 @@
 Encode
 Exporter::Lite
 MIME::Base64
-Digest::SHA1
-
-Path::Class
-Getopt::Long
-Pod::Usage
-Encode
