@@ -1,3 +1,4 @@
 Encode
 Exporter::Lite
+HTTP::Request
 MIME::Base64
