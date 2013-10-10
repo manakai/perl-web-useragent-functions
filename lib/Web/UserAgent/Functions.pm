@@ -383,6 +383,7 @@ sub _http {
         $use_proxy = 1;
     }
 
+    require HTTP::Request;
     my $req = HTTP::Request->new($args{method} => $args{url});
     while (my ($n, $v) = each %{$args{header_fields} or {}}) {
         if (ref $v eq 'ARRAY') {
