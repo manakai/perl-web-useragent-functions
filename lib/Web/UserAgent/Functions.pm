@@ -554,3 +554,14 @@ sub _http {
 }
 
 1;
+
+=head1 LICENSE
+
+Copyright 2009-2013 Hatena <http://www.hatena.ne.jp/>.
+
+Copyright 2014 Wakaba <wakaba@suikawiki.org>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
