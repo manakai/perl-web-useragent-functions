@@ -59,7 +59,7 @@ sub serialize_form_urlencoded ($) {
         } else {
             ();
         }
-    } keys %$params;
+    } sort { $a cmp $b } keys %$params;
 }
 
 sub http_get (%) {
@@ -188,7 +188,7 @@ sub http_post (%) {
             
             my @part;
 
-            for my $key (keys %{$args{params} or {}}) {
+            for my $key (sort { $a cmp $b } keys %{$args{params} or {}}) {
                 for my $value (ref $args{params}->{$key} eq 'ARRAY'
                                      ? @{$args{params}->{$key}}
                                      : ($args{params}->{$key})) {
@@ -201,7 +201,7 @@ sub http_post (%) {
             }
 
             local $/ = undef;
-            for my $key (keys %{$args{files} or {}}) {
+            for my $key (sort { $a cmp $b } keys %{$args{files} or {}}) {
                 for my $value (ref $args{files}->{$key} eq 'ARRAY'
                                      ? @{$args{files}->{$key}}
                                      : ($args{files}->{$key})) {
@@ -502,7 +502,7 @@ sub _http {
             my $res = HTTP::Response->new(
                 $code,
                 $msg,
-                [map { $_ => $headers->{$_} } grep { not /[A-Z]/ } keys %$headers],
+                [map { $_ => $headers->{$_} } sort { $a cmp $b } grep { not /[A-Z]/ } keys %$headers],
                 $body,
             );
             $res->protocol($http_version);
@@ -561,3 +561,14 @@ sub _http {
 }
 
 1;
+
+=head1 LICENSE
+
+Copyright 2009-2013 Hatena <http://www.hatena.ne.jp/>.
+
+Copyright 2014 Wakaba <wakaba@suikawiki.org>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
