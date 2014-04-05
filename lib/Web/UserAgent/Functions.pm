@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '7.0';
+our $VERSION = '8.0';
 use Path::Class;
 use LWP::UserAgent;
 use LWP::UserAgent::Curl;
