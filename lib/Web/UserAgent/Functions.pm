@@ -400,6 +400,11 @@ sub _http {
     if ($DEBUG or $DUMP) {
         warn "<$args{url}>...\n" if $DEBUG;
         print $DUMP_OUTPUT "====== REQUEST($seq_id) ======\n";
+        if ($args{anyevent}) {
+            print $DUMP_OUTPUT "== AnyEvent::HTTP ==\n";
+        } else {
+            print $DUMP_OUTPUT "== LWP::UserAgent ==\n";
+        }
         if ($args{anyevent} and $SocksProxyURL) {
             print $DUMP_OUTPUT "== PROXY $SocksProxyURL ==\n";
         } elsif (not $args{anyevent} and $SOCKSIFYING) {
