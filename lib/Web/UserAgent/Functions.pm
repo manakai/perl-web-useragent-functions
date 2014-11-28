@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions;
 use strict;
 use warnings;
-our $VERSION = '8.0';
+our $VERSION = '9.0';
 use Path::Class;
 use Encode;
 use Exporter::Lite;
@@ -120,7 +120,7 @@ sub http_get (%) {
 my @boundary_alphabet = ('a'..'z', '0'..'9');
 
 sub mime_param_value ($) {
-    my $v = $_[0];
+    my $v = encode 'utf-8', $_[0];
     $v =~ s/([^0-9A-Za-z_.-])/\\$1/g;
     return $v;
 }
