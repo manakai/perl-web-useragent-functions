@@ -2,3 +2,4 @@ Encode
 Exporter::Lite
 HTTP::Request
 MIME::Base64
+Path::Class
