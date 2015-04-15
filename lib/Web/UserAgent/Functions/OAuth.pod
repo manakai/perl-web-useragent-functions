@@ -13,6 +13,8 @@ L<Web::UserAgent::Functions> will be useful.
 
 =head1 FUNCTIONS
 
+Following functions are available:
+
 =over 4
 
 =item RETURN = http_oauth1_request_temp_credentials OPTIONS
@@ -58,8 +60,8 @@ specified, the C<url_scheme> option for the function, if specified, or
 its default value is used instead.  Anyway, they are used to construct
 the Resource Owner Authorization URL.
 
-The C<anyevent> and C<cb> options may also be specified.  For their
-semantics, see C<http_post> function of the
+The C<timeout>, C<anyevent>, and C<cb> options may also be specified.
+For their semantics, see C<http_post> function of the
 L<Web::UserAgent::Functions> module.  If the callback is specified,
 return values are used as the arguments to the callback.  Otherwise,
 return values are used as the return values of the function.
@@ -99,8 +101,8 @@ If the function is invoked to process the verifier code shown to the
 user by the C<oob> callback page, the verifier code must be specified
 as the value of the C<oauth_verifier> option.
 
-The C<anyevent> and C<cb> options may also be specified.  For their
-semantics, see C<http_post> function of the
+The C<timeout>, C<anyevent>, and C<cb> options may also be specified.
+For their semantics, see C<http_post> function of the
 L<Web::UserAgent::Functions> module.  If the callback is specified,
 return values are used as the arguments to the callback.  Otherwise,
 return values are used as the return values of the function.
@@ -160,7 +162,7 @@ demo scripts using functions exported by this module, including:
 
 =head1 SEE ALSO
 
-The OAuth 1.0 Protocol <http://tools.ietf.org/html/rfc5849>.
+The OAuth 1.0 Protocol <https://tools.ietf.org/html/rfc5849>.
 
 L<Web::UserAgent::Functions>.
 
@@ -170,7 +172,7 @@ Wakaba <wakaba@suikawiki.org>.
 
 =head1 LICENSE
 
-Copyright 2013 Wakaba <wakaba@suikawiki.org>.
+Copyright 2013-2015 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

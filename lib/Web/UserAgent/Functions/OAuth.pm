@@ -1,7 +1,7 @@
 package Web::UserAgent::Functions::OAuth;
 use strict;
 use warnings;
-our $VERSION = '1.0';
+our $VERSION = '2.0';
 use Carp qw(croak);
 use Encode;
 use Web::UserAgent::Functions qw(http_post_data);
@@ -11,7 +11,7 @@ use Exporter::Lite;
 our @EXPORT;
 our @EXPORT_OK;
 
-## <http://tools.ietf.org/html/rfc5849#section-2.2>
+## <https://tools.ietf.org/html/rfc5849#section-2.2>
 push @EXPORT_OK, qw(http_oauth1_get_auth_url);
 sub http_oauth1_get_auth_url (%) {
   my %args = @_;
@@ -32,7 +32,7 @@ sub http_oauth1_get_auth_url (%) {
   return $args{url};
 } # http_oauth1_get_auth_url
 
-## <http://tools.ietf.org/html/rfc5849#section-2.1>.
+## <https://tools.ietf.org/html/rfc5849#section-2.1>.
 push @EXPORT, qw(http_oauth1_request_temp_credentials);
 sub http_oauth1_request_temp_credentials (%) {
   my %args = @_;
@@ -62,6 +62,7 @@ sub http_oauth1_request_temp_credentials (%) {
       header_fields => {Authorization => $oauth->http_authorization,
                         'Content-Type' => 'application/x-www-form-urlencoded'},
       content => $oauth->form_body,
+      timeout => $args{timeout},
       anyevent => $args{anyevent},
       cb => sub {
         my ($req, $res) = @_;
@@ -92,7 +93,7 @@ sub http_oauth1_request_temp_credentials (%) {
   return ($temp_token, $temp_token_secret, $auth_url);
 } # http_oauth1_request_temp_credentials
 
-## <http://tools.ietf.org/html/rfc5849#section-2.3>.
+## <https://tools.ietf.org/html/rfc5849#section-2.3>.
 push @EXPORT, qw(http_oauth1_request_token);
 sub http_oauth1_request_token (%) {
   my %args = @_;
@@ -147,6 +148,7 @@ sub http_oauth1_request_token (%) {
       pathquery => $oauth->request_url,
       header_fields => {Authorization => $oauth->http_authorization},
       content => '',
+      timeout => $args{timeout},
       anyevent => $args{anyevent},
       cb => sub {
         my ($req, $res) = @_;
@@ -168,3 +170,12 @@ sub http_oauth1_request_token (%) {
 } # http_oauth1_request_token
 
 1;
+
+=head1 LICENSE
+
+Copyright 2013-2015 Wakaba <wakaba@suikawiki.org>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
