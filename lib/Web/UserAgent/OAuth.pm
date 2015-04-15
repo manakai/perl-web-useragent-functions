@@ -35,6 +35,13 @@ sub client_shared_secret {
     return $_[0]->{client_shared_secret};
 }
 
+sub oauth_callback {
+    if (@_ > 1) {
+        $_[0]->{oauth_callback} = $_[1];
+    }
+    return $_[0]->{oauth_callback};
+}
+
 sub oauth_token {
     if (@_ > 1) {
         $_[0]->{oauth_token} = $_[1];
@@ -188,6 +195,7 @@ sub create_oauth_params {
         croak "|$key| is not set" unless defined $value;
         push @param, [$key => $value];
     }
+    for ($self->oauth_callback) { push @param, [oauth_callback => $_] if defined $_ }
     for ($self->oauth_token) { push @param, [oauth_token => $_] if defined $_ }
     for ($self->oauth_verifier) { push @param, [oauth_verifier => $_] if defined $_ }
     return $self->{oauth_params} = \@param;
