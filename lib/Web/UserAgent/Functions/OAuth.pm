@@ -83,9 +83,10 @@ sub http_oauth1_request_temp_credentials (%) {
           warn "<@{[$req->uri]}>: Not OAuth response\n";
         }
         $auth_url = http_oauth1_get_auth_url
-            url_scheme => $args{url_scheme},
-            host => $args{host},
-            %{$args{auth} or []},
+            url_scheme => $args{auth}->{url_scheme} // $args{url_scheme},
+            host => $args{auth}->{host} // $args{host},
+            url => $args{auth}->{url},
+            pathquery => $args{auth}->{pathquery},
             temp_token => $temp_token
                 if defined $temp_token;
         $args{cb}->($temp_token, $temp_token_secret, $auth_url) if $args{cb};
