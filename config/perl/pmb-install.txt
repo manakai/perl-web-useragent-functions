@@ -27,7 +27,6 @@ HTTP::Date~6.02
 HTTP::Headers::Util~6.13
 HTTP::Negotiate~6.01
 HTTP::Response~6.13
-HTTP::Status~6.13
 IO::HTML~1.001
 IO::Socket::SSL~2.051
 IO::Socket::Socks~0.74
@@ -41,12 +40,12 @@ List::MoreUtils::XS~0.426
 List::Rubyish~0.03
 MIME::Base64~3.15
 MRO::Compat~0.13
-Module::Runtime~0.015
+Module::Runtime~0.016
 Mozilla::CA~20160104
 Net::HTTP~6.17
 Net::HTTPS~6.17
 Net::SSLeay~1.81
-OAuth::Lite::Token
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.104
 Pod::Text~4.09
@@ -59,7 +58,6 @@ Try::Tiny~0.28
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
 URI~1.72
-URI::Escape~3.31
 WWW::RobotRules~6.02
 XSLoader~0.24
 common::sense~3.74
