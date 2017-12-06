@@ -28,6 +28,8 @@ HTTP::Date~6.02
 HTTP::Headers~6.13
 HTTP::Negotiate~6.01
 HTTP::Request::Common~6.13
+HTTP::Response~6.13
+HTTP::Status~6.13
 IO::HTML~1.001
 IO::Socket::SSL~2.052
 IO::Socket::Socks~0.74
@@ -46,15 +48,15 @@ Mozilla::CA~20160104
 Net::HTTP~6.17
 Net::HTTPS~6.17
 Net::SSLeay~1.82
-OAuth::Lite::AuthMethod
+OAuth::Lite::Consumer
 Path::Class~0.37
 Path::Tiny~0.104
 Pod::Text~4.09
 Pod::Usage~1.69
 Scalar::Util~1.49
 Term::ANSIColor~4.06
+Test::Builder~1.302120
 Test::Class~0.50
-Test::More~1.302120
 Try::Tiny~0.28
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
