@@ -11,7 +11,7 @@ Crypt::OpenSSL::Random~0.11
 Crypt::SSLeay~0.72
 Digest::SHA~6.01
 Digest::SHA1~2.13
-Encode~2.94
+Encode~2.95
 Encode::Locale~1.05
 Exporter::Lite~0.08
 Exporter::Tiny~1.000000
@@ -25,8 +25,10 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.01
 HTTP::Date~6.02
+HTTP::Headers~6.14
+HTTP::Headers::Util~6.14
 HTTP::Negotiate~6.01
-HTTP::Response~6.14
+HTTP::Request::Common~6.14
 IO::HTML~1.001
 IO::Socket::SSL~2.054
 IO::Socket::Socks~0.74
@@ -43,6 +45,7 @@ MRO::Compat~0.13
 Module::Runtime~0.016
 Mozilla::CA~20160104
 Net::HTTP~6.17
+Net::HTTPS~6.17
 Net::SSLeay~1.84
 OAuth::Lite::AuthMethod
 Path::Class~0.37
