@@ -26,11 +26,9 @@ HTTP::Cookies~6.04
 HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Negotiate~6.01
-HTTP::Request~6.14
 HTTP::Request::Common~6.14
-HTTP::Response~6.14
 IO::HTML~1.001
-IO::Socket::SSL~2.054
+IO::Socket::SSL~2.055
 IO::Socket::Socks~0.74
 JSON::XS~3.04
 LWP~6.31
