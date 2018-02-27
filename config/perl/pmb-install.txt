@@ -28,15 +28,14 @@ HTTP::Date~6.02
 HTTP::Negotiate~6.01
 HTTP::Request~6.14
 HTTP::Response~6.14
-HTTP::Status~6.14
 IO::HTML~1.001
 IO::Socket::SSL~2.056
 IO::Socket::Socks~0.74
 JSON::XS~3.04
-LWP~6.32
+LWP~6.33
 LWP::MediaTypes~6.02
 LWP::Protocol::https~6.07
-LWP::UserAgent~6.32
+LWP::UserAgent~6.33
 List::MoreUtils~0.428
 List::MoreUtils::XS~0.428
 List::Rubyish~0.03
@@ -46,7 +45,7 @@ Module::Runtime~0.016
 Mozilla::CA~20160104
 Net::HTTP~6.17
 Net::SSLeay~1.84
-OAuth::Lite::Token
+OAuth::Lite::Consumer
 Path::Class~0.37
 Path::Tiny~0.104
 Pod::Text~4.10
