@@ -7,7 +7,7 @@ Class::Accessor~0.51
 Class::Data::Accessor~0.04004
 Class::ErrorHandler~0.04
 Crypt::OpenSSL::Guess~0.11
-Crypt::OpenSSL::RSA~0.28
+Crypt::OpenSSL::RSA~0.30
 Crypt::OpenSSL::Random~0.15
 Crypt::SSLeay~0.72
 Digest::SHA~6.02
@@ -28,8 +28,7 @@ HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Headers::Util~6.16
 HTTP::Negotiate~6.01
-HTTP::Request~6.16
-HTTP::Request::Common~6.16
+HTTP::Status~6.16
 IO::HTML~1.001
 IO::Socket::SSL~2.056
 IO::Socket::Socks~0.74
@@ -46,8 +45,9 @@ MRO::Compat~0.13
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.17
+Net::HTTPS~6.17
 Net::SSLeay~1.85
-OAuth::Lite::Token
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.104
 Pod::Text~4.10
