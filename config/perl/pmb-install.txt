@@ -28,7 +28,8 @@ HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Headers::Util~6.16
 HTTP::Negotiate~6.01
-HTTP::Request::Common~6.16
+HTTP::Request~6.16
+HTTP::Status~6.16
 IO::HTML~1.001
 IO::Socket::SSL~2.056
 IO::Socket::Socks~0.74
@@ -54,8 +55,8 @@ Pod::Text~4.10
 Pod::Usage~1.69
 Scalar::Util~1.50
 Term::ANSIColor~4.06
-Test::Builder~1.302136
 Test::Class~0.50
+Test::More~1.302136
 Try::Tiny~0.30
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
