@@ -54,8 +54,8 @@ Pod::Text~4.11
 Pod::Usage~1.69
 Scalar::Util~1.50
 Term::ANSIColor~4.06
-Test::Builder~1.302138
 Test::Class~0.50
+Test::More~1.302138
 Try::Tiny~0.30
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
