@@ -27,7 +27,7 @@ HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Headers::Util~6.18
 HTTP::Negotiate~6.01
-HTTP::Status~6.18
+HTTP::Request::Common~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.058
 IO::Socket::Socks~0.74
@@ -44,10 +44,11 @@ MRO::Compat~0.13
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.18
+Net::HTTPS~6.18
 Net::SSLeay~1.85
-OAuth::Lite::Consumer
+OAuth::Lite::Token
 Path::Class~0.37
-Path::Tiny~0.106
+Path::Tiny~0.108
 Pod::Text~4.11
 Pod::Usage~1.69
 Scalar::Util~1.50
@@ -58,7 +59,6 @@ Try::Tiny~0.30
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
 URI~1.74
-URI::Escape~3.31
 WWW::RobotRules~6.02
 XSLoader~0.24
 common::sense~3.74
