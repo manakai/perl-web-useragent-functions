@@ -25,9 +25,10 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.01
 HTTP::Date~6.02
-HTTP::Headers::Util~6.18
 HTTP::Negotiate~6.01
+HTTP::Request~6.18
 HTTP::Request::Common~6.18
+HTTP::Status~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.058
 IO::Socket::Socks~0.74
@@ -46,7 +47,7 @@ Mozilla::CA~20180117
 Net::HTTP~6.18
 Net::HTTPS~6.18
 Net::SSLeay~1.85
-OAuth::Lite::Token
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.108
 Pod::Text~4.11
