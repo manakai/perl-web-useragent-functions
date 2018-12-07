@@ -26,6 +26,7 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.01
 HTTP::Date~6.02
+HTTP::Headers::Util~6.18
 HTTP::Negotiate~6.01
 HTTP::Request~6.18
 HTTP::Response~6.18
@@ -53,7 +54,7 @@ Pod::Text~4.11
 Pod::Usage~1.69
 Scalar::Util~1.50
 Term::ANSIColor~4.06
-Test::Builder~1.302140
+Test::Builder~1.302141
 Test::Class~0.50
 Try::Tiny~0.30
 Types::Serialiser~1.0
