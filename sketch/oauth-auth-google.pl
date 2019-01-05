@@ -36,3 +36,41 @@ my (undef, $res) = http_post
     };
 
 warn $res->content;
+my $body = $res->content;
+$body =~ /"access_token"\s*:\s*"([^"]+)"/;
+my $access_token = $1;
+
+=pod
+
+my (undef, $res) = http_get
+    url => q<https://www.googleapis.com/plus/v1/people/me/openIdConnect>,
+    params => {
+    },
+    header_fields => {
+      authorization => 'Bearer ' . $access_token,
+    };
+
+warn $res->content;
+
+
+my (undef, $res) = http_get
+    url => q<https://www.googleapis.com/oauth2/v3/userinfo>,
+    params => {
+    },
+    header_fields => {
+      authorization => 'Bearer ' . $access_token,
+    };
+
+warn $res->content;
+
+=cut
+
+my (undef, $res) = http_get
+    url => q<https://openidconnect.googleapis.com/v1/userinfo>,
+    params => {
+    },
+    header_fields => {
+      authorization => 'Bearer ' . $access_token,
+    };
+
+warn $res->content;
