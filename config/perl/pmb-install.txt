@@ -1,7 +1,7 @@
 AnyEvent~7.15
 AnyEvent::HTTP~2.24
 AnyEvent::HTTP::Socks~0.05
-Canary::Stability~2012
+Canary::Stability~2013
 Carp~1.50
 Class::Accessor~0.51
 Class::Data::Accessor~0.04004
@@ -49,7 +49,6 @@ Module::Build::Tiny~0.039
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.18
-Net::HTTPS~6.18
 Net::SSLeay~1.85
 OAuth::Lite::Consumer
 Path::Class~0.37
@@ -59,8 +58,8 @@ Pod::Usage~1.69
 Scalar::Util~1.50
 TAP::Harness::Env~3.42
 Term::ANSIColor~4.06
-Test::Builder~1.302162
 Test::Class~0.50
+Test::More~1.302162
 Test::Needs~0.002006
 Try::Tiny~0.30
 Types::Serialiser~1.0
