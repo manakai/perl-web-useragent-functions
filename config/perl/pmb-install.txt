@@ -32,7 +32,7 @@ HTTP::Date~6.02
 HTTP::Negotiate~6.01
 HTTP::Request~6.18
 HTTP::Request::Common~6.18
-HTTP::Status~6.18
+HTTP::Response~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.066
 IO::Socket::Socks~0.74
@@ -50,9 +50,8 @@ Module::Build::Tiny~0.039
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.18
-Net::HTTPS~6.18
 Net::SSLeay~1.85
-OAuth::Lite::Token
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.108
 Pod::Text~4.11
