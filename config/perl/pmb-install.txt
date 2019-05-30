@@ -31,7 +31,6 @@ HTTP::Daemon~6.04
 HTTP::Date~6.02
 HTTP::Negotiate~6.01
 HTTP::Request~6.18
-HTTP::Response~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.066
 IO::Socket::Socks~0.74
