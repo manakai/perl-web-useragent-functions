@@ -29,8 +29,9 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.06
 HTTP::Date~6.02
+HTTP::Headers~6.18
+HTTP::Headers::Util~6.18
 HTTP::Negotiate~6.01
-HTTP::Request~6.18
 HTTP::Status~6.18
 IO::HTML~1.001
 IO::Socket::IP~0.39
@@ -50,7 +51,6 @@ Module::Build::Tiny~0.039
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.19
-Net::HTTPS~6.19
 Net::SSLeay~1.88
 OAuth::Lite::Consumer
 Path::Class~0.37
@@ -60,8 +60,8 @@ Pod::Usage~1.69
 Scalar::Util~1.52
 TAP::Harness::Env~3.42
 Term::ANSIColor~4.06
+Test::Builder~1.302168
 Test::Class~0.50
-Test::More~1.302168
 Test::Needs~0.002006
 Try::Tiny~0.30
 Types::Serialiser~1.0
