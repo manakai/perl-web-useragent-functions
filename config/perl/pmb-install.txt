@@ -32,7 +32,7 @@ HTTP::Date~6.02
 HTTP::Headers~6.18
 HTTP::Negotiate~6.01
 HTTP::Request~6.18
-HTTP::Request::Common~6.18
+HTTP::Status~6.18
 IO::HTML~1.001
 IO::Socket::IP~0.39
 IO::Socket::SSL~2.066
@@ -51,8 +51,9 @@ Module::Build::Tiny~0.039
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.19
+Net::HTTPS~6.19
 Net::SSLeay~1.88
-OAuth::Lite::Consumer
+OAuth::Lite::Token
 Path::Class~0.37
 Path::Tiny~0.108
 Pod::Text~4.12
@@ -60,14 +61,13 @@ Pod::Usage~1.69
 Scalar::Util~1.53
 TAP::Harness::Env~3.42
 Term::ANSIColor~4.06
-Test::Builder~1.302168
 Test::Class~0.50
+Test::More~1.302168
 Test::Needs~0.002006
 Try::Tiny~0.30
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
 URI~1.76
-URI::Escape~3.31
 WWW::RobotRules~6.02
 XSLoader~0.24
 common::sense~3.74
