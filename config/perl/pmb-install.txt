@@ -24,13 +24,13 @@ File::Temp~0.2309
 Filter::Util::Call~1.59
 Getopt::Long~2.51
 HTML::Entities~3.69
+HTML::HeadParser~3.71
 HTML::Tagset~3.20
-HTTP::Cookies~6.05
+HTTP::Cookies~6.06
 HTTP::Daemon~6.06
 HTTP::Date~6.02
+HTTP::Headers~6.18
 HTTP::Negotiate~6.01
-HTTP::Request~6.18
-HTTP::Request::Common~6.18
 HTTP::Response~6.18
 IO::HTML~1.001
 IO::Socket::IP~0.39
@@ -50,9 +50,8 @@ Module::Build::Tiny~0.039
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.19
-Net::HTTPS~6.19
 Net::SSLeay~1.88
-OAuth::Lite::Consumer
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.108
 Pod::Text~4.12
