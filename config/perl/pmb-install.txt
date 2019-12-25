@@ -12,7 +12,7 @@ Crypt::OpenSSL::Random~0.15
 Crypt::SSLeay~0.72
 Digest::SHA~6.02
 Digest::SHA1~2.13
-Encode~3.01
+Encode~3.02
 Encode::Locale~1.05
 Exporter::Lite~0.08
 Exporter::Tiny~1.002001
@@ -30,8 +30,7 @@ HTTP::Cookies~6.08
 HTTP::Daemon~6.06
 HTTP::Date~6.05
 HTTP::Negotiate~6.01
-HTTP::Request~6.18
-HTTP::Response~6.18
+HTTP::Status~6.18
 IO::HTML~1.001
 IO::Socket::IP~0.39
 IO::Socket::SSL~2.066
@@ -50,9 +49,8 @@ Module::Build::Tiny~0.039
 Module::Runtime~0.016
 Mozilla::CA~20180117
 Net::HTTP~6.19
-Net::HTTPS~6.19
 Net::SSLeay~1.88
-OAuth::Lite::Token
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.108
 Pod::Text~4.12
