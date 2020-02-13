@@ -29,9 +29,7 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.08
 HTTP::Daemon~6.06
 HTTP::Date~6.05
-HTTP::Headers~6.18
 HTTP::Negotiate~6.01
-HTTP::Request~6.18
 HTTP::Request::Common~6.18
 HTTP::Response~6.18
 IO::HTML~1.001
@@ -54,7 +52,7 @@ Mozilla::CA~20180117
 Net::HTTP~6.19
 Net::HTTPS~6.19
 Net::SSLeay~1.88
-OAuth::Lite::AuthMethod
+OAuth::Lite::Token
 Path::Class~0.37
 Path::Tiny~0.112
 Pod::Text~4.14
@@ -71,6 +69,7 @@ Try::Tiny~0.30
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
 URI~1.76
+URI::Escape~3.31
 WWW::RobotRules~6.02
 XSLoader~0.24
 common::sense~3.74
