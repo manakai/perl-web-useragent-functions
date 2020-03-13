@@ -31,7 +31,8 @@ HTTP::Daemon~6.06
 HTTP::Date~6.05
 HTTP::Negotiate~6.01
 HTTP::Request~6.22
-HTTP::Response~6.22
+HTTP::Request::Common~6.22
+HTTP::Status~6.22
 IO::HTML~1.001
 IO::Socket::IP~0.39
 IO::Socket::SSL~2.067
@@ -60,8 +61,8 @@ Pod::Usage~1.69
 Scalar::Util~1.54
 TAP::Harness::Env~3.42
 Term::ANSIColor~5.01
-Test::Builder~1.302172
 Test::Class~0.50
+Test::More~1.302172
 Test::Needs~0.002006
 Time::Local~1.30
 Time::Zone~2.24
