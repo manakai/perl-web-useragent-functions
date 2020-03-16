@@ -29,10 +29,11 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.08
 HTTP::Daemon~6.06
 HTTP::Date~6.05
-HTTP::Headers~6.22
+HTTP::Headers::Util~6.22
 HTTP::Negotiate~6.01
 HTTP::Request~6.22
-HTTP::Response~6.22
+HTTP::Request::Common~6.22
+HTTP::Status~6.22
 IO::HTML~1.001
 IO::Socket::IP~0.39
 IO::Socket::SSL~2.067
@@ -53,11 +54,11 @@ Mozilla::CA~20180117
 Net::HTTP~6.19
 Net::HTTPS~6.19
 Net::SSLeay~1.88
-OAuth::Lite::Consumer
+OAuth::Lite::Token
 Path::Class~0.37
 Path::Tiny~0.112
 Pod::Text~4.14
-Pod::Usage~1.69
+Pod::Usage~1.70
 Scalar::Util~1.54
 TAP::Harness::Env~3.42
 Term::ANSIColor~5.01
@@ -70,6 +71,7 @@ Try::Tiny~0.30
 Types::Serialiser~1.0
 UNIVERSAL::require~0.18
 URI~1.76
+URI::Escape~3.31
 WWW::RobotRules~6.02
 XSLoader~0.24
 common::sense~3.74
