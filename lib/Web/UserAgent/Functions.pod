@@ -23,6 +23,10 @@ Web::UserAgent::Functions - Easy-to-use functions for HTTP accesses
 
 =head1 DESCRIPTION
 
+USE OF THIS MODULE IS B<DEPRECATED> in favor of
+L<Web::Transport::BasicClient> module in the perl-web-resource
+repository <https://github.com/manakai/perl-web-resource/>.
+
 This module provides three functions for HTTP access: C<http_get>,
 C<http_post>, and C<http_post_data>.  They are in fact wrappers for
 L<LWP::UserAgent>.  They accept parameters that describes which
@@ -47,41 +51,22 @@ It adds following features to the original L<LWP::UserAgent> module:
 
 L<LWP::UserAgent>. C<bin/tools/http.pl>.
 
-=head1 DEVELOPMENT
-
-Latest version of the module is available from the GitHub repository:
-
-=over 4
-
-=item GitHub
-
-<https://github.com/wakaba/perl-web-useragent-functions>.
-
-=item Travis CI
-
-<http://travis-ci.org/wakaba/perl-web-useragent-functions>.
-
-=back
-
-=head1 CHANGES
-
-=over 4
-
-=item 2012-04-11 (2.0)
-
-Added C<basic_auth> option.
-
-=back
-
 =head1 AUTHOR
 
 Wakaba <wakaba@suikawiki.org>.
+
+=head1 HISTORY
+
+This Git repository was located at
+<https://github.com/wakaba/perl-web-useragent-functions>.
+
+It was transferred to the manakai project on 22 June 2022.
 
 =head1 LICENSE
 
 Copyright 2009-2013 Hatena <http://www.hatena.ne.jp/>.
 
-Copyright 2014-2017 Wakaba <wakaba@suikawiki.org>.
+Copyright 2014-2022 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
