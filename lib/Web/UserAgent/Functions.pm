@@ -459,7 +459,6 @@ sub _http {
         return ($req, undef);
     } elsif ($args{anyevent}) {
         require AnyEvent;
-        require AnyEvent::TLS;
         require AnyEvent::HTTP;
         require HTTP::Response;
         my $aeclass = 'AnyEvent::HTTP';
@@ -487,15 +486,10 @@ sub _http {
             $done->($res) if $done;
             undef $done;
         }) if $lwp_args{timeout};
-        ## AnyEvent (7.16 Fri Jul 19 18:00:21 CEST 2019) changed
-        ## default |dh| value from |schmorp1539| to |ffdhe3072| but
-        ## some environments we support do not have it :-<
-        my $tls_ctx = AnyEvent::TLS->new (dh => 'schmorp1539');
         my @req_args = (
             $req->method,
             $args{url},
             socks => $socks_url,
-            tls_ctx => $tls_ctx,
             (defined $lwp_args{max_redirect} ? (recurse => $lwp_args{max_redirect}) : ()),
             %ae_args,
             body => $req->content,
@@ -577,7 +571,7 @@ sub _http {
 
 Copyright 2009-2013 Hatena <http://www.hatena.ne.jp/>.
 
-Copyright 2014-2019 Wakaba <wakaba@suikawiki.org>.
+Copyright 2014 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
