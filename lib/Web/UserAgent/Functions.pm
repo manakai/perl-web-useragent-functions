@@ -312,6 +312,7 @@ our $SocksProxyURL;
 our $MaxSize;
 our $AcceptSchemes ||= [qw(http https)];
 our $SeqID = int rand 1000000;
+my $AEHPatched = 0;
 
 sub _http {
     my %args = @_;
@@ -467,8 +468,30 @@ sub _http {
             $aeclass .= '::Socks';
             require AnyEvent::HTTP::Socks;
             $socks_url = $SocksProxyURL;
-        }
+          }
 
+        if (not $AEHPatched) {
+          ## Dirty workaround for AnyEvent::Handle without want write
+          ## error support.
+          require Net::SSLeay;
+          my $ge = Net::SSLeay->can ('get_error');
+          *Net::SSLeay::get_error = sub ($$) {
+            my $r = $ge->(@_);
+            if ($r == 3) { # want write
+              return 2; # want read
+            } else {
+              return $r;
+            }
+          };
+          require AnyEvent::Handle;
+          my $dt = AnyEvent::Handle->can ('_dotls');
+          *AnyEvent::Handle::_dotls = sub {
+            $dt->($_[0]);
+            $dt->($_[0]);
+          };
+          $AEHPatched = 1;
+        }
+        
         my %ae_args;
         if ($use_proxy) {
             if ($Proxy =~ m{^[Hh][Tt][Tt][Pp]://(.+)\:([0-9]+)/?$}) {
@@ -571,7 +594,7 @@ sub _http {
 
 Copyright 2009-2013 Hatena <http://www.hatena.ne.jp/>.
 
-Copyright 2014 Wakaba <wakaba@suikawiki.org>.
+Copyright 2014-2022 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
