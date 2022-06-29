@@ -27,8 +27,8 @@ HTTP::Cookies~6.10
 HTTP::Date~6.05
 HTTP::Headers~6.37
 HTTP::Negotiate~6.01
+HTTP::Request~6.37
 HTTP::Response~6.37
-HTTP::Status~6.37
 IO::HTML~1.004
 IO::Socket::SSL~2.074
 IO::Socket::Socks~0.74
@@ -37,7 +37,6 @@ LWP~6.67
 LWP::MediaTypes~6.04
 LWP::Protocol::http~6.67
 LWP::Protocol::https~6.10
-LWP::UserAgent~6.67
 List::MoreUtils~0.430
 List::MoreUtils::XS~0.430
 List::Rubyish~0.03
@@ -62,6 +61,6 @@ Try::Tiny~0.31
 Types::Serialiser~1.01
 UNIVERSAL::require~0.19
 URI~5.10
-URI::URL~5.10
+URI::Escape~5.10
 WWW::RobotRules~6.02
 common::sense~3.75
