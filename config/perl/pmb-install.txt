@@ -26,14 +26,18 @@ HTML::HeadParser~3.78
 HTML::Tagset~3.20
 HTTP::Cookies~6.10
 HTTP::Date~6.05
+HTTP::Headers~6.37
 HTTP::Negotiate~6.01
 HTTP::Request~6.37
+HTTP::Request::Common~6.37
+HTTP::Response~6.37
 IO::HTML~1.004
 IO::Socket::SSL~2.074
 IO::Socket::Socks~0.74
 JSON::XS~4.03
 LWP~6.67
 LWP::MediaTypes~6.04
+LWP::Protocol::http~6.67
 LWP::Protocol::https~6.10
 LWP::UserAgent~6.67
 List::MoreUtils~0.430
@@ -46,6 +50,7 @@ Module::Build~0.4231
 Module::Runtime~0.016
 Mozilla::CA~20211001
 Net::HTTP~6.22
+Net::HTTPS~6.22
 Net::SSLeay~1.92
 OAuth::Lite::Token
 Path::Class~0.37
