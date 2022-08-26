@@ -1,7 +1,6 @@
 AnyEvent~7.17
 AnyEvent::HTTP~2.25
 AnyEvent::HTTP::Socks~0.05
-AnyEvent::Util
 Canary::Stability~2013
 Carp~1.50
 Class::Accessor~0.51
@@ -47,9 +46,8 @@ Module::Build~0.4231
 Module::Runtime~0.016
 Mozilla::CA~20211001
 Net::HTTP~6.22
-Net::HTTPS~6.22
 Net::SSLeay~1.92
-OAuth::Lite::Consumer
+OAuth::Lite::Token
 Path::Class~0.37
 Path::Tiny~0.122
 Pod::Simple~3.43
@@ -65,5 +63,6 @@ Try::Tiny~0.31
 Types::Serialiser~1.01
 UNIVERSAL::require~0.19
 URI~5.12
+URI::Escape~5.12
 WWW::RobotRules~6.02
 common::sense~3.75
