@@ -1,7 +1,7 @@
 AnyEvent~7.17
 AnyEvent::HTTP~2.25
 AnyEvent::HTTP::Socks~0.05
-AnyEvent::Handle
+AnyEvent::Socket
 Canary::Stability~2013
 Carp~1.50
 Class::Accessor~0.51
@@ -29,6 +29,8 @@ HTTP::Date~6.05
 HTTP::Headers~6.37
 HTTP::Negotiate~6.01
 HTTP::Request~6.37
+HTTP::Request::Common~6.37
+HTTP::Response~6.37
 IO::HTML~1.004
 IO::Socket::SSL~2.075
 IO::Socket::Socks~0.74
@@ -37,6 +39,7 @@ LWP~6.67
 LWP::MediaTypes~6.04
 LWP::Protocol::http~6.67
 LWP::Protocol::https~6.10
+LWP::UserAgent~6.67
 List::MoreUtils~0.430
 List::MoreUtils::XS~0.430
 List::Rubyish~0.03
@@ -65,5 +68,6 @@ Try::Tiny~0.31
 Types::Serialiser~1.01
 UNIVERSAL::require~0.19
 URI~5.12
+URI::Escape~5.12
 WWW::RobotRules~6.02
 common::sense~3.75
