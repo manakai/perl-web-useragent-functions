@@ -26,10 +26,9 @@ HTML::HeadParser~3.80
 HTML::Tagset~3.20
 HTTP::Cookies~6.10
 HTTP::Date~6.05
-HTTP::Headers~6.44
-HTTP::Headers::Util~6.44
 HTTP::Negotiate~6.01
-HTTP::Status~6.44
+HTTP::Request::Common~6.44
+HTTP::Response~6.44
 IO::HTML~1.004
 IO::Socket::SSL~2.075
 IO::Socket::Socks~0.74
@@ -38,7 +37,6 @@ LWP~6.67
 LWP::MediaTypes~6.04
 LWP::Protocol::http~6.67
 LWP::Protocol::https~6.10
-LWP::UserAgent~6.67
 List::MoreUtils~0.430
 List::MoreUtils::XS~0.430
 List::Rubyish~0.03
@@ -49,9 +47,8 @@ Module::Build~0.4231
 Module::Runtime~0.016
 Mozilla::CA~20211001
 Net::HTTP~6.22
-Net::HTTPS~6.22
 Net::SSLeay~1.92
-OAuth::Lite::Token
+OAuth::Lite::AuthMethod
 Path::Class~0.37
 Path::Tiny~0.130
 Pod::Simple~3.43
@@ -59,8 +56,8 @@ Pod::Usage~2.03
 Scalar::Util~1.63
 Socket~2.036
 Term::ANSIColor~5.01
-Test::Builder~1.302191
 Test::Class~0.52
+Test::More~1.302191
 Time::HiRes~1.9764
 Time::Zone~2.24
 Try::Tiny~0.31
