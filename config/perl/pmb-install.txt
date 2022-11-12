@@ -1,7 +1,7 @@
 AnyEvent~7.17
 AnyEvent::HTTP~2.25
 AnyEvent::HTTP::Socks~0.05
-AnyEvent::Handle
+AnyEvent::Util
 Canary::Stability~2013
 Carp~1.50
 Class::Accessor~0.51
@@ -28,9 +28,9 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.10
 HTTP::Date~6.05
 HTTP::Headers~6.44
+HTTP::Headers::Util~6.44
 HTTP::Negotiate~6.01
 HTTP::Request~6.44
-HTTP::Request::Common~6.44
 IO::HTML~1.004
 IO::Socket::SSL~2.075
 IO::Socket::Socks~0.74
@@ -50,6 +50,7 @@ Module::Build~0.4231
 Module::Runtime~0.016
 Mozilla::CA~20211001
 Net::HTTP~6.22
+Net::HTTPS~6.22
 Net::SSLeay~1.92
 OAuth::Lite::AuthMethod
 Path::Class~0.37
@@ -59,8 +60,8 @@ Pod::Usage~2.03
 Scalar::Util~1.63
 Socket~2.036
 Term::ANSIColor~5.01
+Test::Builder~1.302191
 Test::Class~0.52
-Test::More~1.302191
 Time::HiRes~1.9764
 Time::Zone~2.24
 Try::Tiny~0.31
