@@ -24,10 +24,10 @@ helloworld.letsencrypt.org
 www.hatena.ne.jp
 hatena.g.hatena.ne.jp
 roomhub.jp
-rust-jp.herokuapp.com
 www.realtokyoestate.co.jp
 www.amazon.co.jp
 )) {
+#rust-jp.herokuapp.com
   my $url = qq<https://$host>;
   test {
     my $c = shift;
