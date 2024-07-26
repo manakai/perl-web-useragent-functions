@@ -124,10 +124,6 @@
                   {
                      "experimental" : false,
                      "perl_version" : "5.14.2"
-                  },
-                  {
-                     "experimental" : false,
-                     "perl_version" : "5.10.1"
                   }
                ]
             }
