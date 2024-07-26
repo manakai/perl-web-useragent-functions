@@ -47,6 +47,13 @@ It adds following features to the original L<LWP::UserAgent> module:
 
 =back
 
+=head1 DEPENDENCY
+
+This module requires Perl 5.10 or later (as required by its
+dependencies).
+
+This module requires L<LWP::UserAgent>.
+
 =head1 SEE ALSO
 
 L<LWP::UserAgent>. C<bin/tools/http.pl>.
