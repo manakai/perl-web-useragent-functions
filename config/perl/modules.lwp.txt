@@ -1,3 +1,6 @@
 LWP::UserAgent
-Crypt::SSLeay
 LWP::Protocol::https
+
+## <https://metacpan.org/pod/Crypt::SSLeay>
+#Crypt::SSLeay
+IO::Socket::SSL

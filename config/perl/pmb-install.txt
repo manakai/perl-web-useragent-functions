@@ -9,7 +9,6 @@ Class::ErrorHandler~0.04
 Crypt::OpenSSL::Guess~0.15
 Crypt::OpenSSL::RSA~0.32
 Crypt::OpenSSL::Random~0.15
-Crypt::SSLeay~0.72
 Digest::SHA~6.02
 Digest::SHA1~2.13
 Encode~3.18
