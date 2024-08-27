@@ -27,8 +27,7 @@ HTTP::Cookies~6.11
 HTTP::Date~6.06
 HTTP::Headers~6.46
 HTTP::Negotiate~6.01
-HTTP::Response~6.46
-HTTP::Status~6.46
+HTTP::Request::Common~6.46
 IO::HTML~1.004
 IO::Socket::SSL~2.088
 IO::Socket::Socks~0.74
@@ -47,8 +46,9 @@ Module::Build~0.4234
 Module::Runtime~0.016
 Mozilla::CA~20240730
 Net::HTTP~6.23
+Net::HTTPS~6.23
 Net::SSLeay~1.94
-OAuth::Lite::Consumer
+OAuth::Lite::Token
 Path::Class~0.37
 Path::Tiny~0.146
 Pod::Usage~2.03
@@ -64,6 +64,5 @@ Try::Tiny~0.32
 Types::Serialiser~1.01
 UNIVERSAL::require~0.19
 URI~5.28
-URI::Escape~5.28
 WWW::RobotRules~6.02
 common::sense~3.75
