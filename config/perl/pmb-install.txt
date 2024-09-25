@@ -28,6 +28,7 @@ HTTP::Date~6.06
 HTTP::Headers~6.46
 HTTP::Negotiate~6.01
 HTTP::Request~6.46
+HTTP::Response~6.46
 IO::HTML~1.004
 IO::Socket::SSL~2.089
 IO::Socket::Socks~0.74
@@ -56,8 +57,8 @@ Scalar::Util~1.66
 Socket~2.038
 Term::ANSIColor~5.01
 Term::Table~0.022
+Test::Builder~1.302204
 Test::Class~0.52
-Test::More~1.302204
 Time::HiRes~1.9764
 Time::Zone~2.24
 Try::Tiny~0.32
