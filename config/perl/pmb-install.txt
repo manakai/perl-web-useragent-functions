@@ -46,9 +46,8 @@ Module::Build~0.4234
 Module::Runtime~0.016
 Mozilla::CA~20240924
 Net::HTTP~6.23
-Net::HTTPS~6.23
 Net::SSLeay~1.94
-OAuth::Lite::Consumer
+OAuth::Lite::Token
 Path::Class~0.37
 Path::Tiny~0.146
 Pod::Usage~2.03
