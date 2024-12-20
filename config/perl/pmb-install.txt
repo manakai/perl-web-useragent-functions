@@ -21,13 +21,14 @@ File::Listing~6.16
 File::Temp~0.2311
 Filter::Util::Call~1.64
 Getopt::Long~2.58
+HTML::Entities~3.83
 HTML::HeadParser~3.83
 HTML::Tagset~3.24
 HTTP::Cookies~6.11
 HTTP::Date~6.06
-HTTP::Headers~7.00
 HTTP::Negotiate~6.01
-HTTP::Request~7.00
+HTTP::Request::Common~7.00
+HTTP::Response~7.00
 IO::HTML~1.004
 IO::Socket::SSL~2.089
 IO::Socket::Socks~0.74
@@ -57,8 +58,8 @@ Scalar::Util~1.68
 Socket~2.038
 Term::ANSIColor~5.01
 Term::Table~0.023
+Test::Builder~1.302206
 Test::Class~0.52
-Test::More~1.302204
 Time::HiRes~1.9764
 Time::Zone~2.24
 Try::Tiny~0.32
